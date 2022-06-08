@@ -16,30 +16,37 @@ public class GameManager : MonoBehaviour
     {
         if (checkGrid)
         {
+            checkGrid = false;
+
             foreach ((GameObject wall, GameObject path) in gridObjects)
             {
                 if (wall != null)
                 {
-                    Destroy(path);
+                    Destroyer.DestroyOnUpdate.Add(path);
                 }
-                if (path != null)
+                else
                 {
-                    Destroy(wall);
+                    if (path != null)
+                    {
+                        Destroyer.DestroyOnUpdate.Add(wall);
+                    }
                 }
             }
         }
 
         if (generateGrid)
         {
+            generateGrid = false;
+
             foreach ((GameObject wall, GameObject path) in gridObjects)
             {
                 if (wall != null)
                 {
-                    Destroy(wall);
+                    Destroyer.DestroyOnUpdate.Add(wall);
                 }
                 if (path != null)
                 {
-                    Destroy(path);
+                    Destroyer.DestroyOnUpdate.Add(path);
                 }
             }
             gridObjects.Clear();
@@ -50,7 +57,6 @@ public class GameManager : MonoBehaviour
             // -26.84679
             // -22.75
             // 2 2 2
-            generateGrid = false;
             for (int z = 0; z < 16; z++)
             {
                 for (int x = 0; x < 16; x++)
