@@ -78256,6 +78256,7 @@ MonoBehaviour:
   checkGrid: 0
   grid: {fileID: 184474012}
   hex: {fileID: 6910091517675176736, guid: 495d1af125ee81e4b9e6202bdeeabfd3, type: 3}
+  size: {x: 10, y: 10}
 --- !u!1 &1895702592
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private Transform grid;
     [SerializeField] private GameObject hex;
+    [SerializeField] private Vector2Int size;
 
     private readonly List<(GameObject, GameObject)> gridObjects = new();
 
@@ -57,9 +58,9 @@ public class GameManager : MonoBehaviour
             // -26.84679
             // -22.75
             // 2 2 2
-            for (int z = 0; z < 16; z++)
+            for (int z = 0; z < size.y; z++)
             {
-                for (int x = 0; x < 16; x++)
+                for (int x = 0; x < size.x; x++)
                 {
                     float xPos = x * 1.73205080756f;
                     float zPos = z * 1.5f;
