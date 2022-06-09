@@ -6,12 +6,17 @@ public class EnemyPathing : MonoBehaviour
 {
 
     [SerializeField] List<GameObject> points = new List<GameObject>();
-    int index = 0;
+    [SerializeField] int index = 0;
     [SerializeField] float speed;
     // Start is called before the first frame update
     void Start()
     {
-        
+        GameObject parent = GameObject.Find("Points");
+        Debug.Log(parent.transform.childCount);
+        for(int i = 0; i < parent.transform.childCount - 1; i++)
+        {
+            points.Add(GameObject.Find(i.ToString()));
+        }
     }
 
     void FixedUpdate()

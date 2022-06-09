@@ -333,11 +333,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 104fbf1a9be01564aa5ad108a623389f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  points:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  points: []
+  index: 0
   speed: 0.5
 --- !u!1 &2588107208011484763
 GameObject:
