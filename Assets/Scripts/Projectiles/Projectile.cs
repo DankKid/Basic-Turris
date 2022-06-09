@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
+    public Rigidbody rb;
+
     public int damage;
     public int collateralHits;
 

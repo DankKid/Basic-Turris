@@ -25313,9 +25313,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 436699519502169302, guid: 59ca05bd80b633343beed9088352c976,
     type: 3}
-  reachDistance: 10
   turretPrefabs:
   - {fileID: 3230477610759440461, guid: bba584df16897db4a9d9fa4227da2f36, type: 3}
+  reachDistance: 10
+  waveManager: {fileID: 1760526590}
 --- !u!114 &1760526590
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25328,6 +25329,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9560b76e4ee1f7c41b78099ea988d3c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  manager: {fileID: 1760526589}
   enemyPrefabs:
   - {fileID: 1248594763090683039, guid: 2986519f7c8aa6b488dfb5b31b30baff, type: 3}
   debugging: 1

@@ -4,5 +4,10 @@ using UnityEngine;
 
 public abstract class Turret : MonoBehaviour
 {
+    protected GameManager manager;
 
+    public void Init(GameManager manager)
+    {
+        this.manager = manager;
+    }
 }

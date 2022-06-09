@@ -266,7 +266,7 @@ GameObject:
   - component: {fileID: 436699519502169302}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -335,8 +335,8 @@ MonoBehaviour:
   characterController: {fileID: 436699519502169288}
   body: {fileID: 436699519006330414}
   hands: {fileID: 436699520339383329}
-  barrel: {fileID: 5916296857358322477}
-  bulletPrefab: {fileID: 5303893306378533524, guid: cf74364ce8dd3dc4ba8a06e256be85d6,
+  projectileSpawn: {fileID: 5916296857358322477}
+  bulletPrefab: {fileID: 5898414909302145861, guid: cf74364ce8dd3dc4ba8a06e256be85d6,
     type: 3}
   walkingSpeed: 6.5
   runningSpeed: 9

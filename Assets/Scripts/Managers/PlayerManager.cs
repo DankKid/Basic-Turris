@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
+    private GameManager manager;
+
     [SerializeField] private CharacterController characterController;
 
     [SerializeField] private GameObject body;
     [SerializeField] private GameObject hands;
-    [SerializeField] private GameObject barrel;
 
-    [SerializeField] private Rigidbody bulletPrefab;
+    [SerializeField] private GameObject projectileSpawn;
+    [SerializeField] private Projectile bulletPrefab;
 
     [SerializeField] private float walkingSpeed;
     [SerializeField] private float runningSpeed;
@@ -27,11 +29,9 @@ public class PlayerManager : MonoBehaviour
     private float lastSpeedX = 0;
     private float lastSpeedY = 0;
 
-    private Queue<(double, Rigidbody)> bullets;
-
-    private void Awake()
+    public void Init(GameManager manager)
     {
-        bullets = new();
+        this.manager = manager;
     }
 
     private void Start()
@@ -74,19 +74,10 @@ public class PlayerManager : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            Rigidbody bullet = Instantiate(bulletPrefab, barrel.transform.position, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(-90 + rotationX, 0, 0)));
-            bullet.velocity = characterController.velocity;
-            bullet.AddRelativeForce(Vector3.down * bulletSpeed, ForceMode.VelocityChange);
-            bullets.Enqueue((Time.timeAsDouble, bullet));
-        }
-
-        while (bullets.Count > 0 && (Time.timeAsDouble - bullets.Peek().Item1 > 2f))
-        {
-            Rigidbody bullet = bullets.Dequeue().Item2;
-            if (bullet != null)
-            {
-                Destroy(bullet.gameObject);
-            }
+            Projectile bullet = Instantiate(bulletPrefab, projectileSpawn.transform.position, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(-90 + rotationX, 0, 0)));
+            bullet.rb.velocity = characterController.velocity;
+            bullet.rb.AddRelativeForce(Vector3.down * bulletSpeed, ForceMode.VelocityChange);
+            manager.AddProjectile(bullet);
         }
     }
 }

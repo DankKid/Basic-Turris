@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    private GameManager manager;
+
     [SerializeField] private Rigidbody rb;
 
     [SerializeField] int index = 0;
@@ -13,8 +15,9 @@ public class Enemy : MonoBehaviour
 
     private List<Transform> points;
 
-    public void Init(List<Transform> points)
+    public void Init(GameManager manager, List<Transform> points)
     {
+        this.manager = manager;
         currentHealth = startHealth;
         this.points = points;
     }
@@ -23,7 +26,7 @@ public class Enemy : MonoBehaviour
     {
         if(currentHealth <= 0)
         {
-            Destroy(gameObject);
+            Die();
         }
 
         Transform target = points[index];
@@ -39,7 +42,7 @@ public class Enemy : MonoBehaviour
             index++;
             if (index == points.Count)
             {
-                Destroy(gameObject);//Add Points before
+                Die();
             }
         }
         
@@ -56,5 +59,11 @@ public class Enemy : MonoBehaviour
                 Destroy(other.gameObject);
             }
         }
+    }
+
+    private void Die()
+    {
+        manager.enemies.Remove(gameObject.GetInstanceID());
+        Destroy(gameObject);
     }
 }
