@@ -22,6 +22,8 @@ public class PlayerManager : MonoBehaviour
     private float lastSpeedX = 0;
     private float lastSpeedY = 0;
 
+    [SerializeField] ParticleSystem gunParticle;
+
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -59,5 +61,10 @@ public class PlayerManager : MonoBehaviour
         rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
         Camera.main.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
         transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            gunParticle.Play();
+        }
     }
 }
