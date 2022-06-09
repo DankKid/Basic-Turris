@@ -4,11 +4,11 @@ using UnityEditor;
 using UnityEngine;
 
 [InitializeOnLoad]
-public class Destroyer
+public class OnValidateDestroyer
 {
-    public static HashSet<GameObject> DestroyOnUpdate = new();
+    public static HashSet<GameObject> DestroyQueue = new();
 
-    static Destroyer()
+    static OnValidateDestroyer()
     {
         EditorApplication.update += Update;
     }
@@ -19,10 +19,10 @@ public class Destroyer
         {
             return;
         }
-        foreach (GameObject go in DestroyOnUpdate)
+        foreach (GameObject go in DestroyQueue)
         {
             Object.DestroyImmediate(go);
         }
-        DestroyOnUpdate.Clear();
+        DestroyQueue.Clear();
     }
 }

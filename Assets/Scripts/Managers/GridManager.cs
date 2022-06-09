@@ -33,7 +33,7 @@ public class GridManager : MonoBehaviour
             {
                 if (go != null)
                 {
-                    Destroyer.DestroyOnUpdate.Add(go);
+                    OnValidateDestroyer.DestroyQueue.Add(go);
                 }
             }
 

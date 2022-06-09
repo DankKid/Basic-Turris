@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WaveController : MonoBehaviour
+public class WaveManager : MonoBehaviour
 {
-    [SerializeField] private List<Enemy> enemyTypes;
+    [SerializeField] private List<Enemy> enemyPrefabs;
     [SerializeField] private bool debugging;
-    [SerializeField] GameObject spawnPoint;
+    [SerializeField] private GameObject spawnPoint;
 
     private List<Transform> points;
 
@@ -25,7 +25,7 @@ public class WaveController : MonoBehaviour
     {
         if(debugging && Input.GetKeyDown(KeyCode.Alpha1))
         {
-            Enemy enemy = Instantiate(enemyTypes[0], spawnPoint.transform.position, Quaternion.identity);
+            Enemy enemy = Instantiate(enemyPrefabs[0], spawnPoint.transform.position, Quaternion.identity);
             enemy.Init(points);
         }
     }
