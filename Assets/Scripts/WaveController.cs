@@ -4,20 +4,29 @@ using UnityEngine;
 
 public class WaveController : MonoBehaviour
 {
-    [SerializeField] List<GameObject> enemyTypes = new List<GameObject>();
-    bool debugging = true;
+    [SerializeField] private List<Enemy> enemyTypes;
+    [SerializeField] private bool debugging;
     [SerializeField] GameObject spawnPoint;
-    // Start is called before the first frame update
-    void Start()
+
+    private List<Transform> points;
+
+    private void Start()
     {
-        
+        points = new();
+
+        Transform pointsTransform = GameObject.Find("Points").transform;
+        for (int i = 1; i < pointsTransform.childCount - 1; i++)
+        {
+            points.Add(pointsTransform.GetChild(i).transform);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if(debugging && Input.GetKeyDown(KeyCode.Keypad1)){
-            Instantiate(enemyTypes[0], spawnPoint.transform.position, Quaternion.identity);
+        if(debugging && Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            Enemy enemy = Instantiate(enemyTypes[0], spawnPoint.transform.position, Quaternion.identity);
+            enemy.Init(points);
         }
     }
 }

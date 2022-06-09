@@ -8,6 +8,9 @@ public class PlayerManager : MonoBehaviour
 
     [SerializeField] private GameObject body;
     [SerializeField] private GameObject hands;
+    [SerializeField] private GameObject barrel;
+
+    [SerializeField] private Rigidbody bulletPrefab;
 
     [SerializeField] private float walkingSpeed;
     [SerializeField] private float runningSpeed;
@@ -17,12 +20,19 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private float lookXLimit;
     [SerializeField] private float momentumLerp;
 
+    [SerializeField] private float bulletSpeed;
+
     private float rotationX = 0;
     private Vector3 moveDirection = Vector3.zero;
     private float lastSpeedX = 0;
     private float lastSpeedY = 0;
 
-    [SerializeField] ParticleSystem gunParticle;
+    private Queue<(double, Rigidbody)> bullets;
+
+    private void Awake()
+    {
+        bullets = new();
+    }
 
     private void Start()
     {
@@ -64,7 +74,19 @@ public class PlayerManager : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            gunParticle.Play();
+            Rigidbody bullet = Instantiate(bulletPrefab, barrel.transform.position, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(-90 + rotationX, 0, 0)));
+            bullet.velocity = characterController.velocity;
+            bullet.AddRelativeForce(Vector3.down * bulletSpeed, ForceMode.VelocityChange);
+            bullets.Enqueue((Time.timeAsDouble, bullet));
+        }
+
+        while (bullets.Count > 0 && (Time.timeAsDouble - bullets.Peek().Item1 > 2f))
+        {
+            Rigidbody bullet = bullets.Dequeue().Item2;
+            if (bullet != null)
+            {
+                Destroy(bullet.gameObject);
+            }
         }
     }
 }
