@@ -15,7 +15,7 @@ public class WaveController : MonoBehaviour
         points = new();
 
         Transform pointsTransform = GameObject.Find("Points").transform;
-        for (int i = 1; i < pointsTransform.childCount - 1; i++)
+        for (int i = 1; i < pointsTransform.childCount; i++)
         {
             points.Add(pointsTransform.GetChild(i).transform);
         }
