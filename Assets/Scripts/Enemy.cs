@@ -51,7 +51,7 @@ public class Enemy : MonoBehaviour
                 currentHealth -= projectile.damage;
                 projectile.collateralHits--;
             }
-            else
+            if (projectile.collateralHits <= 0)
             {
                 Destroy(other.gameObject);
             }

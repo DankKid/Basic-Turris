@@ -345,7 +345,7 @@ MonoBehaviour:
   lookSpeed: 2
   lookXLimit: 90
   momentumLerp: 0.8
-  bulletSpeed: 50
+  bulletSpeed: 32
 --- !u!1 &436699520003952554
 GameObject:
   m_ObjectHideFlags: 0
