@@ -24,61 +24,51 @@ public class CannonTurret : Turret
 
     public override void MainUpdate()
     {
-        if (!ShootAtClosestEnemy())
+        if (TryFindTarget(out Enemy target))
         {
-            Aim(GetHeadingToAimAt(GameManager.I.wave.GetSpawnPoint()), 0);
+            Vector3 vector = (target.transform.position - transform.position).normalized;
+            Shoot(vector);
+            Aim(vector);
+        }
+        else
+        {
+            Vector3 vector = (GameManager.I.wave.GetSpawnPoint() - transform.position).normalized;
+            Aim(vector);
         }
     }
 
-    private bool ShootAtClosestEnemy()
+    private bool TryFindTarget(out Enemy target)
     {
+        target = null;
+
         float closestDistance = float.MaxValue;
-        Enemy closest = null;
         foreach (Enemy enemy in GameManager.I.enemy.Get().Values)
         {
             float distance = Vector3.Distance(enemy.transform.position, transform.position);
             if (distance < range && distance < closestDistance)
             {
                 closestDistance = distance;
-                closest = enemy;
+                target = enemy;
             }
         }
 
-        if (closest == null)
-        {
-            return false;
-        }
-
-        Aim(GetHeadingToAimAt(closest.transform.position), GetPitchToAimAt(closest.transform.position));
-
-        /*
-        Projectile bullet = Instantiate(cannonballPrefab, projectileSpawn.position, Quaternion.identity);
-        bullet.rb.AddRelativeForce((closest.transform.position - transform.position).normalized * cannonballSpeed, ForceMode.VelocityChange);
-        GameManager.I.projectile.Add(bullet);
-        */
-
-        return true;
-    }
-
-    private float GetHeadingToAimAt(Vector3 target)
-    {
-        Vector3 diffVector = transform.position - target;
-        float heading = (Mathf.Atan2(diffVector.x, diffVector.z) * Mathf.Rad2Deg) - 90f;
-        return heading;
-    }
-
-    private float GetPitchToAimAt(Vector3 target)
-    {
-        Vector3 diffVector = transform.position - target;
-        //float pitch = -Mathf.Atan2(diffVector.x, diffVector.y) * Mathf.Rad2Deg;
-        float pitch = -Vector3.Angle(Vector3.left, diffVector);
-        return pitch;
+        return target != null;
     }
 
 
-    private void Aim(float heading, float pitch)
+    private void Aim(Vector3 vector)
     {
+        float heading = (Mathf.Atan2(vector.x, vector.z) * Mathf.Rad2Deg) + 90f;
+        float pitch = Mathf.Sin(vector.y) * Mathf.Rad2Deg;
+
         turningPlate.localEulerAngles = new Vector3(0, 0, heading);
         barrelPivot.localEulerAngles = new Vector3(0, Mathf.Clamp(pitch, -14, 24.5f), 0);
+    }
+
+    private void Shoot(Vector3 vector)
+    {
+        Projectile bullet = Instantiate(cannonballPrefab, projectileSpawn.position, Quaternion.identity);
+        bullet.rb.AddRelativeForce(vector * cannonballSpeed, ForceMode.VelocityChange);
+        GameManager.I.projectile.Add(bullet);
     }
 }
