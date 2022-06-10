@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class WaveManager : MonoBehaviour
 {
-    [SerializeField] private GameManager manager;
     [SerializeField] private List<Enemy> enemyPrefabs;
     [SerializeField] private bool debugging;
     [SerializeField] private GameObject spawnPoint;
@@ -27,8 +26,8 @@ public class WaveManager : MonoBehaviour
         if(debugging && Input.GetKey(KeyCode.Alpha1))
         {
             Enemy enemy = Instantiate(enemyPrefabs[0], spawnPoint.transform.position, Quaternion.identity);
-            enemy.Init(manager, points);
-            manager.enemies.Add(enemy.gameObject.GetInstanceID(), enemy);
+            enemy.Init(points);
+            GameManager.I.enemy.Add(enemy);
         }
     }
 

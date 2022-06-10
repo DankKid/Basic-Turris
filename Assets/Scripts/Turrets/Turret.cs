@@ -6,8 +6,6 @@ public abstract class Turret : MonoBehaviour
 {
     [SerializeField] private float buildAnimationTime;
 
-    protected GameManager manager;
-
     public HexBase HexBase { get; private set; }
 
     public bool IsConstructing { get; private set; } = false;
@@ -17,9 +15,8 @@ public abstract class Turret : MonoBehaviour
     private Vector3 startScale;
     private Vector3 endScale;
 
-    public void Init(GameManager manager, HexBase hexBase)
+    public void Init(HexBase hexBase)
     {
-        this.manager = manager;
         HexBase = hexBase;
 
         Construct();

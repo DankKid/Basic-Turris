@@ -10,10 +10,12 @@ public class CannonTurret : Turret
 
     [SerializeField] private Transform turningPlate;
     [SerializeField] private Transform barrelPivot;
+    [SerializeField] private Transform barrel;
     [SerializeField] private Transform projectileSpawn;
 
     [SerializeField] private float range;
     [SerializeField] private float cannonballSpeed;
+    [SerializeField] private float fireFrequency;
 
     public override void MainInit()
     {
@@ -24,7 +26,7 @@ public class CannonTurret : Turret
     {
         if (!ShootAtClosestEnemy())
         {
-            Aim(GetHeadingToAimAt(manager.waveManager.GetSpawnPoint()), 0);
+            Aim(GetHeadingToAimAt(GameManager.I.wave.GetSpawnPoint()), 0);
         }
     }
 
@@ -32,7 +34,7 @@ public class CannonTurret : Turret
     {
         float closestDistance = float.MaxValue;
         Enemy closest = null;
-        foreach (Enemy enemy in manager.enemies.Values)
+        foreach (Enemy enemy in GameManager.I.enemy.Get().Values)
         {
             float distance = Vector3.Distance(enemy.transform.position, transform.position);
             if (distance < range && distance < closestDistance)
@@ -47,11 +49,13 @@ public class CannonTurret : Turret
             return false;
         }
 
+        Aim(GetHeadingToAimAt(closest.transform.position), GetPitchToAimAt(closest.transform.position));
+
+        /*
         Projectile bullet = Instantiate(cannonballPrefab, projectileSpawn.position, Quaternion.identity);
         bullet.rb.AddRelativeForce((closest.transform.position - transform.position).normalized * cannonballSpeed, ForceMode.VelocityChange);
-        manager.AddProjectile(bullet);
-
-        Aim(GetHeadingToAimAt(closest.transform.position), 0);
+        GameManager.I.projectile.Add(bullet);
+        */
 
         return true;
     }
@@ -59,14 +63,22 @@ public class CannonTurret : Turret
     private float GetHeadingToAimAt(Vector3 target)
     {
         Vector3 diffVector = transform.position - target;
-        float heading = Mathf.Atan2(diffVector.x, diffVector.z) * Mathf.Rad2Deg;
+        float heading = (Mathf.Atan2(diffVector.x, diffVector.z) * Mathf.Rad2Deg) - 90f;
         return heading;
+    }
+
+    private float GetPitchToAimAt(Vector3 target)
+    {
+        Vector3 diffVector = transform.position - target;
+        //float pitch = -Mathf.Atan2(diffVector.x, diffVector.y) * Mathf.Rad2Deg;
+        float pitch = -Vector3.Angle(Vector3.left, diffVector);
+        return pitch;
     }
 
 
     private void Aim(float heading, float pitch)
     {
-        turningPlate.localEulerAngles = new Vector3(0, 0, heading - 90f);
+        turningPlate.localEulerAngles = new Vector3(0, 0, heading);
         barrelPivot.localEulerAngles = new Vector3(0, Mathf.Clamp(pitch, -14, 24.5f), 0);
     }
 }

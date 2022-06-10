@@ -5,105 +5,50 @@ using System;
 
 public class GameManager : MonoBehaviour
 {
+    #region Singleton
+    private static GameManager instance;
+    public static GameManager I { get { return instance; } }
+    private void AwakeSingleton()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+        DontDestroyOnLoad(gameObject);
+    }
+    #endregion Singleton
+
     // Prefabs
     [SerializeField] private PlayerManager playerPrefab;
-    [SerializeField] private List<Turret> turretPrefabs;
+    [Space]
 
-    // Config
-    [SerializeField] private Material hexBaseHighlightMaterial;
-    [SerializeField] private float reachDistance;
+    // Reference Config
+
+    // Value Config
 
     // Public
-    public WaveManager waveManager;
+    public WaveManager wave;
+    public ProjectileManager projectile;
+    public EnemyManager enemy;
+    public ConstructionManager construction;
 
-    // Public Hidden
+    // Public NonSerialized
     [NonSerialized] public PlayerManager player;
-    [NonSerialized] public Dictionary<int, Enemy> enemies;
-    [NonSerialized] public Queue<(double, Projectile)> projectiles;
 
-    private HexBase highlightedHexBase = null;
+    // Private
+
+    private void Awake()
+    {
+        AwakeSingleton();
+    }
 
     private void Start()
     {
         player = Instantiate(playerPrefab, new Vector3(0, 50, 0), Quaternion.identity);
-        player.Init(this);
-        enemies = new();
-        projectiles = new();
-    }
-
-    private void Update()
-    {
-        UpdateConstruction();
-        UpdateProjectiles();
-    }
-
-    private void UpdateConstruction()
-    {
-        HexBase hexBase = null;
-
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit hit, reachDistance))
-        {
-            if (hit.transform.TryGetComponent(out hexBase))
-            {
-                hexBase.TryInit(this);
-
-                if (Input.GetMouseButtonDown(1))
-                {
-                    hexBase.TryConstructTurret(turretPrefabs[0]);
-                }
-                else if (Input.GetMouseButtonDown(2))
-                {
-                    hexBase.TryDeconstructTurret();
-                }
-            }
-            else
-            {
-                Turret turret = hit.transform.GetComponentInParent<Turret>();
-                if (turret != null)
-                {
-                    hexBase = turret.HexBase;
-                    if (Input.GetMouseButtonDown(2))
-                    {
-                        hexBase.TryDeconstructTurret();
-                    }
-                }
-            }
-        }
-
-        if (hexBase == null)
-        {
-            if (highlightedHexBase != null)
-            {
-                highlightedHexBase.Unhighlight();
-                highlightedHexBase = null;
-            }
-        }
-        else
-        {
-            if (highlightedHexBase != null && highlightedHexBase != hexBase)
-            {
-                highlightedHexBase.Unhighlight();
-            }
-            highlightedHexBase = hexBase;
-            hexBase.Highlight(hexBaseHighlightMaterial);
-        }
-    }
-
-    private void UpdateProjectiles()
-    {
-        while (projectiles.Count > 0 && (Time.timeAsDouble - projectiles.Peek().Item1 > 2f))
-        {
-            Projectile bullet = projectiles.Dequeue().Item2;
-            if (bullet != null)
-            {
-                Destroy(bullet.gameObject);
-            }
-        }
-    }
-
-    public void AddProjectile(Projectile projectile)
-    {
-        projectiles.Enqueue((Time.timeAsDouble, projectile));
     }
 }

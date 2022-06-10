@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-    private GameManager manager;
-
     [SerializeField] private CharacterController characterController;
 
     [SerializeField] private GameObject body;
@@ -28,11 +26,6 @@ public class PlayerManager : MonoBehaviour
     private Vector3 moveDirection = Vector3.zero;
     private float lastSpeedX = 0;
     private float lastSpeedY = 0;
-
-    public void Init(GameManager manager)
-    {
-        this.manager = manager;
-    }
 
     private void Start()
     {
@@ -77,7 +70,7 @@ public class PlayerManager : MonoBehaviour
             Projectile bullet = Instantiate(bulletPrefab, projectileSpawn.transform.position, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(-90 + rotationX, 0, 0)));
             bullet.rb.velocity = characterController.velocity;
             bullet.rb.AddRelativeForce(Vector3.down * bulletSpeed, ForceMode.VelocityChange);
-            manager.AddProjectile(bullet);
+            GameManager.I.projectile.Add(bullet);
         }
     }
 }

@@ -25501,6 +25501,9 @@ GameObject:
   - component: {fileID: 1760526587}
   - component: {fileID: 1760526589}
   - component: {fileID: 1760526590}
+  - component: {fileID: 1760526592}
+  - component: {fileID: 1760526591}
+  - component: {fileID: 1760526593}
   m_Layer: 0
   m_Name: Scripts
   m_TagString: Untagged
@@ -25557,12 +25560,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 436699519502169302, guid: 59ca05bd80b633343beed9088352c976,
     type: 3}
-  turretPrefabs:
-  - {fileID: 3230477610759440461, guid: bba584df16897db4a9d9fa4227da2f36, type: 3}
-  hexBaseHighlightMaterial: {fileID: 2100000, guid: 666c257012c05664f832407542acff5d,
-    type: 2}
-  reachDistance: 10
-  waveManager: {fileID: 1760526590}
+  wave: {fileID: 1760526590}
+  projectile: {fileID: 1760526592}
+  enemy: {fileID: 1760526591}
+  construction: {fileID: 1760526593}
 --- !u!114 &1760526590
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25575,11 +25576,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9560b76e4ee1f7c41b78099ea988d3c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  manager: {fileID: 1760526589}
   enemyPrefabs:
   - {fileID: 1248594763090683039, guid: 2986519f7c8aa6b488dfb5b31b30baff, type: 3}
   debugging: 1
   spawnPoint: {fileID: 1126810932}
+--- !u!114 &1760526591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1760526585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4974b4a00707ae84ea5784490d136c58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1760526592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1760526585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a87e21a7fad902540a5459098b043441, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1760526593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1760526585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d66cf5f702e00f438c70bc12b7eea54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  turretPrefabs:
+  - {fileID: 3230477610759440461, guid: bba584df16897db4a9d9fa4227da2f36, type: 3}
+  hexBaseHighlightMaterial: {fileID: 2100000, guid: 666c257012c05664f832407542acff5d,
+    type: 2}
+  reachDistance: 8
 --- !u!1 &1768961423
 GameObject:
   m_ObjectHideFlags: 0

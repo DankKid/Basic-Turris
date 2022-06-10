@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    private GameManager manager;
-
     [SerializeField] private Rigidbody rb;
 
     [SerializeField] int index = 0;
@@ -15,9 +13,8 @@ public class Enemy : MonoBehaviour
 
     private List<Transform> points;
 
-    public void Init(GameManager manager, List<Transform> points)
+    public void Init(List<Transform> points)
     {
-        this.manager = manager;
         currentHealth = startHealth;
         this.points = points;
     }
@@ -63,7 +60,7 @@ public class Enemy : MonoBehaviour
 
     private void Die()
     {
-        manager.enemies.Remove(gameObject.GetInstanceID());
+        GameManager.I.enemy.Remove(this);
         Destroy(gameObject);
     }
 }
