@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 147428641135661666}
   m_Layer: 0
   m_Name: End Cap
-  m_TagString: Untagged
+  m_TagString: Turret
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -112,7 +112,7 @@ GameObject:
   - component: {fileID: 8274243910195806023}
   m_Layer: 0
   m_Name: Cannon Base Block
-  m_TagString: Untagged
+  m_TagString: Turret
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -212,7 +212,7 @@ GameObject:
   - component: {fileID: 4232557309319189157}
   m_Layer: 0
   m_Name: Barrel
-  m_TagString: Untagged
+  m_TagString: Turret
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -313,7 +313,7 @@ GameObject:
   - component: {fileID: 408226755789983685}
   m_Layer: 0
   m_Name: Base Plate
-  m_TagString: Untagged
+  m_TagString: Turret
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -410,7 +410,7 @@ GameObject:
   - component: {fileID: 3230477610759440461}
   m_Layer: 0
   m_Name: Cannon
-  m_TagString: Untagged
+  m_TagString: Turret
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -443,12 +443,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a479f3fc2348edc4d99c1ab699177eda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buildAnimationTime: 1.25
   cannonballPrefab: {fileID: -5408173710148620022, guid: 1a80b8ffdc31f1d41aac2ca6e37e37ae,
     type: 3}
   turningPlate: {fileID: 4669176094810709742}
   barrelPivot: {fileID: 784131622127073425}
   projectileSpawn: {fileID: 187968781676388991}
-  range: 12
+  range: 120
   cannonballSpeed: 24
 --- !u!1 &4824202883197242847
 GameObject:
@@ -464,7 +465,7 @@ GameObject:
   - component: {fileID: 9011540502281485974}
   m_Layer: 0
   m_Name: Cannon Base Block.001
-  m_TagString: Untagged
+  m_TagString: Turret
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -559,7 +560,7 @@ GameObject:
   - component: {fileID: 784131622127073425}
   m_Layer: 0
   m_Name: Pivot
-  m_TagString: Untagged
+  m_TagString: Turret
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -594,7 +595,7 @@ GameObject:
   - component: {fileID: 3737341311656258200}
   m_Layer: 0
   m_Name: Turning Plate
-  m_TagString: Untagged
+  m_TagString: Turret
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -690,7 +691,7 @@ GameObject:
   - component: {fileID: 187968781676388991}
   m_Layer: 0
   m_Name: ProjectileSpawnPoint
-  m_TagString: Untagged
+  m_TagString: Turret
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

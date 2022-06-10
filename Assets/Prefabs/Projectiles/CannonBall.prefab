@@ -116,7 +116,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: -887477298202685694}
   damage: 5
-  collateralHits: 2
+  collateralHits: 3
 --- !u!135 &-3041276413941678969
 SphereCollider:
   m_ObjectHideFlags: 0

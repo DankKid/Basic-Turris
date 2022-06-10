@@ -11,10 +11,16 @@ public class CannonTurret : Turret
     [SerializeField] private Transform turningPlate;
     [SerializeField] private Transform barrelPivot;
     [SerializeField] private Transform projectileSpawn;
+
     [SerializeField] private float range;
     [SerializeField] private float cannonballSpeed;
 
-    private void Update()
+    public override void MainInit()
+    {
+        
+    }
+
+    public override void MainUpdate()
     {
         if (!ShootAtClosestEnemy())
         {

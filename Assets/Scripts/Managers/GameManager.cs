@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<Turret> turretPrefabs;
 
     // Config
+    [SerializeField] private Material hexBaseHighlightMaterial;
     [SerializeField] private float reachDistance;
 
     // Public
@@ -19,6 +20,8 @@ public class GameManager : MonoBehaviour
     [NonSerialized] public PlayerManager player;
     [NonSerialized] public Dictionary<int, Enemy> enemies;
     [NonSerialized] public Queue<(double, Projectile)> projectiles;
+
+    private HexBase highlightedHexBase = null;
 
     private void Start()
     {
@@ -30,23 +33,60 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        UpdatePlacement();
+        UpdateConstruction();
         UpdateProjectiles();
     }
 
-    private void UpdatePlacement()
+    private void UpdateConstruction()
     {
-        if (Input.GetMouseButtonDown(1))
+        HexBase hexBase = null;
+
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out RaycastHit hit, reachDistance))
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit, reachDistance))
+            if (hit.transform.TryGetComponent(out hexBase))
             {
-                if (hit.transform.TryGetComponent(out HexBase hexBase))
+                hexBase.TryInit(this);
+
+                if (Input.GetMouseButtonDown(1))
                 {
-                    hexBase.Init(this);
-                    hexBase.TryPlaceTurret(turretPrefabs[0]);
+                    hexBase.TryConstructTurret(turretPrefabs[0]);
+                }
+                else if (Input.GetMouseButtonDown(2))
+                {
+                    hexBase.TryDeconstructTurret();
                 }
             }
+            else
+            {
+                Turret turret = hit.transform.GetComponentInParent<Turret>();
+                if (turret != null)
+                {
+                    hexBase = turret.HexBase;
+                    if (Input.GetMouseButtonDown(2))
+                    {
+                        hexBase.TryDeconstructTurret();
+                    }
+                }
+            }
+        }
+
+        if (hexBase == null)
+        {
+            if (highlightedHexBase != null)
+            {
+                highlightedHexBase.Unhighlight();
+                highlightedHexBase = null;
+            }
+        }
+        else
+        {
+            if (highlightedHexBase != null && highlightedHexBase != hexBase)
+            {
+                highlightedHexBase.Unhighlight();
+            }
+            highlightedHexBase = hexBase;
+            hexBase.Highlight(hexBaseHighlightMaterial);
         }
     }
 

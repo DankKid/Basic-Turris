@@ -25315,6 +25315,8 @@ MonoBehaviour:
     type: 3}
   turretPrefabs:
   - {fileID: 3230477610759440461, guid: bba584df16897db4a9d9fa4227da2f36, type: 3}
+  hexBaseHighlightMaterial: {fileID: 2100000, guid: 29294e124cb216f4c9d0101097f094b0,
+    type: 2}
   reachDistance: 10
   waveManager: {fileID: 1760526590}
 --- !u!114 &1760526590
