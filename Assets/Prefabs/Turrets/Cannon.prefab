@@ -443,13 +443,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a479f3fc2348edc4d99c1ab699177eda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildAnimationTime: 1.25
+  buildAnimationTime: 1.5
   cannonballPrefab: {fileID: -5408173710148620022, guid: 1a80b8ffdc31f1d41aac2ca6e37e37ae,
     type: 3}
   turningPlate: {fileID: 4669176094810709742}
   barrelPivot: {fileID: 784131622127073425}
   projectileSpawn: {fileID: 187968781676388991}
-  range: 120
+  range: 12
   cannonballSpeed: 24
 --- !u!1 &4824202883197242847
 GameObject:
