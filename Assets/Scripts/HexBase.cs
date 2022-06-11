@@ -33,14 +33,17 @@ public class HexBase : MonoBehaviour
             return false;
         }
         
-        if(GameManager.I.player.points >= 5)
+        if(GameManager.I.player.Coins >= turretPrefab.constructionCost)
         {
             IsOccupied = true;
+
             Turret = Instantiate(turretPrefab, transform.position + new Vector3(0, 1, 0), Quaternion.identity);
             Turret.Init(this);
-            GameManager.I.player.points -= 5;
+            GameManager.I.player.Coins -= turretPrefab.constructionCost;
+
             return true;
         }
+
         return false;
     }
 
@@ -51,9 +54,8 @@ public class HexBase : MonoBehaviour
             return false;
         }
         
-        GameManager.I.player.points += 2;
+        GameManager.I.player.Coins += Turret.deconstructionRefund;
         Turret.Deconstruct();
-
 
         return true;
     }

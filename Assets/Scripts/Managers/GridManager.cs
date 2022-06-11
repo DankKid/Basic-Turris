@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+#if UNITY_EDITOR
 public class GridManager : MonoBehaviour
 {
     [SerializeField] private bool generateGrid;
@@ -80,3 +81,4 @@ public class GridManager : MonoBehaviour
         }
     }
 }
+#endif

@@ -29,11 +29,12 @@ public class GameManager : MonoBehaviour
 
     // Reference Config
     [SerializeField] private Transform sphere;
-    public TMP_Text pointText, gameHealthText;
 
     // Value Config
 
     // Public
+    public TMP_Text coinsText, coreHealthText;
+
     public WaveManager wave;
     public ProjectileManager projectile;
     public EnemyManager enemy;

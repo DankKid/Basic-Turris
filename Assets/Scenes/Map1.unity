@@ -7406,7 +7406,7 @@ GameObject:
   m_Component:
   - component: {fileID: 516534908}
   m_Layer: 5
-  m_Name: PointSystem
+  m_Name: Coins
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13461,7 +13461,7 @@ GameObject:
   m_Component:
   - component: {fileID: 908039091}
   m_Layer: 5
-  m_Name: GameHealth
+  m_Name: Core Health
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25985,8 +25985,8 @@ MonoBehaviour:
   playerPrefab: {fileID: 436699519502169302, guid: 59ca05bd80b633343beed9088352c976,
     type: 3}
   sphere: {fileID: 3452552698894766195}
-  pointText: {fileID: 1152861900}
-  gameHealthText: {fileID: 1452549748}
+  coinsText: {fileID: 1152861900}
+  coreHealthText: {fileID: 1452549748}
   wave: {fileID: 1760526590}
   projectile: {fileID: 1760526592}
   enemy: {fileID: 1760526591}
