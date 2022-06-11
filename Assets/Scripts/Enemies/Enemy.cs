@@ -8,6 +8,8 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float movementHeight;
     [SerializeField] private float speed;
     [SerializeField] private int startingHealth;
+    [SerializeField] private int coreDamage;
+    [SerializeField] private int deathReward;
 
     private int pointIndex = 0;
     private int currentHealth;
@@ -59,7 +61,7 @@ public class Enemy : MonoBehaviour
             pointIndex++;
             if (pointIndex == points.Count)
             {
-                soulDamaged();
+                DamageCore();
             }
         }
         
@@ -81,18 +83,14 @@ public class Enemy : MonoBehaviour
     private void Die()
     {
         GameManager.I.enemy.Remove(this);
-        GameManager.I.player.points += 1;
+        GameManager.I.player.Coins += deathReward;
         Destroy(gameObject);
     }
 
-    private void soulDamaged()
+    private void DamageCore()
     {
         GameManager.I.enemy.Remove(this);
+        GameManager.I.player.CoreHealth -= coreDamage;
         Destroy(gameObject);
-
-        GameManager.I.player.gameHealth -= 1;
-
     }
-
-
 }

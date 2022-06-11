@@ -444,6 +444,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildAnimationTime: 1.5
+  constructionCost: 5
+  deconstructionRefund: 2
   cannonballPrefab: {fileID: -5408173710148620022, guid: 1a80b8ffdc31f1d41aac2ca6e37e37ae,
     type: 3}
   turningPlate: {fileID: 4669176094810709742}

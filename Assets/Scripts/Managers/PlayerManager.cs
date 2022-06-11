@@ -19,28 +19,69 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private float lookSpeed;
     [SerializeField] private float lookXLimit;
     [SerializeField] private float momentumLerp;
-
+    [SerializeField] private float fireFrequency;
+    [Space]
     [SerializeField] private float bulletSpeed;
+    [Space]
+    [SerializeField] private int startingCoreHealth;
 
-    public int points, gameHealth;
+    private int coins;
+    public int Coins
+    {
+        get
+        {
+            return coins;
+        }
+        set
+        {
+            coins = value;
+            GameManager.I.coinsText.text = ": " + coins;
+        }
+    }
+
+    private int coreHealth;
+    public int CoreHealth
+    {
+        get
+        {
+            return coreHealth;
+        }
+        set
+        {
+            coreHealth = value;
+            GameManager.I.coreHealthText.text = ": " + coreHealth;
+        }
+    }
 
     private float rotationX = 0;
     private Vector3 moveDirection = Vector3.zero;
     private float lastSpeedX = 0;
     private float lastSpeedY = 0;
-    float timer = 0;
-    float cooldown = 0.25f;
+
+    private double allowedFiringTime = 0;
+
+    private void Awake()
+    {
+
+    }
+
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        points = 0;
-        gameHealth = 50;
+
+        Coins = 0;
+        CoreHealth = startingCoreHealth;
     }
 
     private void Update()
     {
-        timer -= Time.deltaTime;
+        Move();
+        Shoot();
+    }
+
+    private void Move()
+    {
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
 
@@ -70,17 +111,19 @@ public class PlayerManager : MonoBehaviour
         rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
         Camera.main.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
         transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
+    }
 
-        if (Input.GetMouseButtonDown(0) && timer < 0)
+    private void Shoot()
+    {
+        double time = Time.timeAsDouble;
+        if (Input.GetMouseButtonDown(0) && time >= allowedFiringTime)
         {
-            timer = cooldown;
+            allowedFiringTime = time + (1 / fireFrequency);
+
             Projectile bullet = Instantiate(bulletPrefab, projectileSpawn.transform.position, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(-90 + rotationX, 0, 0)));
             bullet.rb.velocity = characterController.velocity;
             bullet.rb.AddRelativeForce(Vector3.down * bulletSpeed, ForceMode.VelocityChange);
             GameManager.I.projectile.Add(bullet);
         }
-
-        GameManager.I.pointText.text = ": " + points;
-        GameManager.I.gameHealthText.text = ": " + gameHealth;
     }
 }

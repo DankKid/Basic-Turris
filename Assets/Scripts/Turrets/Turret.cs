@@ -6,6 +6,9 @@ public abstract class Turret : MonoBehaviour
 {
     [SerializeField] private float buildAnimationTime;
 
+    public int constructionCost;
+    public int deconstructionRefund;
+
     public HexBase HexBase { get; private set; }
 
     public bool IsConstructing { get; private set; } = false;
@@ -50,6 +53,14 @@ public abstract class Turret : MonoBehaviour
             MainUpdate();
         }
     }
+    private void Construct()
+    {
+        IsConstructing = true;
+        constructAnimationStartTime = Time.timeAsDouble;
+        startScale = Vector3.zero;
+        endScale = transform.localScale;
+        transform.localScale = startScale;
+    }
     public void Deconstruct()
     {
         if (IsConstructing)
@@ -65,13 +76,4 @@ public abstract class Turret : MonoBehaviour
 
     public abstract void MainInit();
     public abstract void MainUpdate();
-
-    private void Construct()
-    {
-        IsConstructing = true;
-        constructAnimationStartTime = Time.timeAsDouble;
-        startScale = Vector3.zero;
-        endScale = transform.localScale;
-        transform.localScale = startScale;
-    }
 }
