@@ -57,7 +57,7 @@ public class CannonTurret : Turret
         float pitch = Mathf.MoveTowardsAngle(currentPitch, targetPitch, pitchMoveSpeed * Time.deltaTime);
         SetHeadingAndPitch(heading, pitch);
         bool aimingWithinThresholds = Mathf.DeltaAngle(heading, targetHeading) < headingFireThreshold && Mathf.DeltaAngle(pitch, targetPitch) < pitchFireThreshold;
-        if (aimingWithinThresholds)
+        if (target != null && aimingWithinThresholds)
         {
             Shoot(projectileSpawn.forward);
         }
