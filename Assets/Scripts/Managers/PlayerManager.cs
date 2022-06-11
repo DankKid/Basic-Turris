@@ -28,7 +28,8 @@ public class PlayerManager : MonoBehaviour
     private Vector3 moveDirection = Vector3.zero;
     private float lastSpeedX = 0;
     private float lastSpeedY = 0;
-
+    float timer = 0;
+    float cooldown = 0.25f;
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -39,6 +40,7 @@ public class PlayerManager : MonoBehaviour
 
     private void Update()
     {
+        timer -= Time.deltaTime;
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
 
@@ -69,8 +71,9 @@ public class PlayerManager : MonoBehaviour
         Camera.main.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
         transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && timer < 0)
         {
+            timer = cooldown;
             Projectile bullet = Instantiate(bulletPrefab, projectileSpawn.transform.position, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(-90 + rotationX, 0, 0)));
             bullet.rb.velocity = characterController.velocity;
             bullet.rb.AddRelativeForce(Vector3.down * bulletSpeed, ForceMode.VelocityChange);
