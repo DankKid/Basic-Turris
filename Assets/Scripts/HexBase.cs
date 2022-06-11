@@ -14,6 +14,7 @@ public class HexBase : MonoBehaviour
     {
         meshRenderer = GetComponent<MeshRenderer>();
         nominalMaterial = meshRenderer.material;
+        
     }
 
     public void Highlight(Material highlightMaterial)
@@ -31,12 +32,16 @@ public class HexBase : MonoBehaviour
         {
             return false;
         }
-        IsOccupied = true;
-
-        Turret = Instantiate(turretPrefab, transform.position + new Vector3(0, 1, 0), Quaternion.identity);
-        Turret.Init(this);
-
-        return true;
+        
+        if(GameManager.I.player.points >= 5)
+        {
+            IsOccupied = true;
+            Turret = Instantiate(turretPrefab, transform.position + new Vector3(0, 1, 0), Quaternion.identity);
+            Turret.Init(this);
+            GameManager.I.player.points -= 5;
+            return true;
+        }
+        return false;
     }
 
     public bool TryDeconstructTurret()
@@ -45,8 +50,10 @@ public class HexBase : MonoBehaviour
         {
             return false;
         }
-
+        
+        GameManager.I.player.points += 2;
         Turret.Deconstruct();
+
 
         return true;
     }

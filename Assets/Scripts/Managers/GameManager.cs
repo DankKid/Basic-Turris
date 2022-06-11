@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-
+using TMPro;
 public class GameManager : MonoBehaviour
 {
     #region Singleton
@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
 
     // Reference Config
     [SerializeField] private Transform sphere;
+    public TMP_Text pointText, gameHealthText;
 
     // Value Config
 
@@ -42,7 +43,7 @@ public class GameManager : MonoBehaviour
     [NonSerialized] public PlayerManager player;
     [NonSerialized] public float sphereRadius;
     [NonSerialized] public Vector3 sphereCenter;
-
+    
     // Private
 
 

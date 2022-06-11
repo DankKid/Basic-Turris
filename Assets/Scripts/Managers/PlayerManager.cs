@@ -22,6 +22,8 @@ public class PlayerManager : MonoBehaviour
 
     [SerializeField] private float bulletSpeed;
 
+    public int points, gameHealth;
+
     private float rotationX = 0;
     private Vector3 moveDirection = Vector3.zero;
     private float lastSpeedX = 0;
@@ -31,6 +33,8 @@ public class PlayerManager : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        points = 0;
+        gameHealth = 50;
     }
 
     private void Update()
@@ -72,5 +76,8 @@ public class PlayerManager : MonoBehaviour
             bullet.rb.AddRelativeForce(Vector3.down * bulletSpeed, ForceMode.VelocityChange);
             GameManager.I.projectile.Add(bullet);
         }
+
+        GameManager.I.pointText.text = ": " + points;
+        GameManager.I.gameHealthText.text = ": " + gameHealth;
     }
 }
