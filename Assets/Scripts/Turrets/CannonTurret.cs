@@ -17,6 +17,8 @@ public class CannonTurret : Turret
     [SerializeField] private float cannonballSpeed;
     [SerializeField] private float fireFrequency;
 
+    private double allowedFiringTime = 0;
+
     public override void MainInit()
     {
         
@@ -67,6 +69,16 @@ public class CannonTurret : Turret
 
     private void Shoot(Vector3 vector)
     {
+        double time = Time.timeAsDouble;
+        if (time >= allowedFiringTime)
+        {
+            allowedFiringTime = time + (1 / fireFrequency);
+        }
+        else
+        {
+            return;
+        }
+
         Projectile bullet = Instantiate(cannonballPrefab, projectileSpawn.position, Quaternion.identity);
         bullet.rb.AddRelativeForce(vector * cannonballSpeed, ForceMode.VelocityChange);
         GameManager.I.projectile.Add(bullet);

@@ -23,7 +23,7 @@ public class WaveManager : MonoBehaviour
 
     private void Update()
     {
-        if(debugging && Input.GetKey(KeyCode.Alpha1))
+        if(debugging && Input.GetKeyDown(KeyCode.Alpha1))
         {
             Enemy enemy = Instantiate(enemyPrefabs[0], spawnPoint.transform.position, Quaternion.identity);
             enemy.Init(points);

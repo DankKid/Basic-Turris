@@ -452,6 +452,7 @@ MonoBehaviour:
   projectileSpawn: {fileID: 187968781676388991}
   range: 12
   cannonballSpeed: 24
+  fireFrequency: 1
 --- !u!1 &4824202883197242847
 GameObject:
   m_ObjectHideFlags: 0

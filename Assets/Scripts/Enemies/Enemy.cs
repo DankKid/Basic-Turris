@@ -6,17 +6,23 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] private Rigidbody rb;
 
-    [SerializeField] int index = 0;
+    [SerializeField] private float movementHeight;
     [SerializeField] float speed;
-    [SerializeField] int startHealth;
-    [SerializeField] int currentHealth;
+    [SerializeField] int startingHealth;
+
+    private int pointIndex = 0;
+    private int currentHealth;
 
     private List<Transform> points;
 
     public void Init(List<Transform> points)
     {
-        currentHealth = startHealth;
         this.points = points;
+    }
+
+    private void Awake()
+    {
+        currentHealth = startingHealth;
     }
 
     private void Update()
@@ -26,9 +32,16 @@ public class Enemy : MonoBehaviour
             Die();
         }
 
-        Transform target = points[index];
-        transform.LookAt(target, Vector3.up);
-        transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+        Transform target = points[pointIndex];
+        Vector3 targetPosition = target.position;
+        Vector3 position = transform.position;
+
+        Vector3 vector = (targetPosition - position).normalized;
+        transform.eulerAngles = new Vector3(0, Mathf.Atan2(vector.x, vector.z) * Mathf.Rad2Deg, 0);
+
+        Vector3 newPosition = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+        newPosition.y = movementHeight;
+        transform.position = newPosition;
     }
 
 
@@ -36,8 +49,8 @@ public class Enemy : MonoBehaviour
     {
         if(other.CompareTag("EnemyPoints"))
         {
-            index++;
-            if (index == points.Count)
+            pointIndex++;
+            if (pointIndex == points.Count)
             {
                 Die();
             }
