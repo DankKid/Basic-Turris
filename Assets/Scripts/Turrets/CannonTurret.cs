@@ -45,21 +45,21 @@ public class CannonTurret : Turret
             Vector3 targetPosition = target.GetFuturePosition(0);
             direction = (targetPosition - projectileSpawn.position).normalized;
             Aim(direction);
-
-            float heading = Mathf.MoveTowardsAngle(currentHeading, targetHeading, headingMoveSpeed * Time.deltaTime);
-            float pitch = Mathf.MoveTowardsAngle(currentPitch, targetPitch, pitchMoveSpeed * Time.deltaTime);
-            SetHeadingAndPitch(heading, pitch);
-            bool aimingWithinThresholds = Mathf.DeltaAngle(heading, targetHeading) < headingFireThreshold && Mathf.DeltaAngle(pitch, targetPitch) < pitchFireThreshold;
-            if (aimingWithinThresholds)
-            {
-                Shoot(projectileSpawn.forward);
-            }
         }
         else
         {
             // TODO Make it smarter, aim where enemies will come from
             direction = (GameManager.I.wave.GetSpawnPoint() - projectileSpawn.position).normalized;
             Aim(direction);
+        }
+
+        float heading = Mathf.MoveTowardsAngle(currentHeading, targetHeading, headingMoveSpeed * Time.deltaTime);
+        float pitch = Mathf.MoveTowardsAngle(currentPitch, targetPitch, pitchMoveSpeed * Time.deltaTime);
+        SetHeadingAndPitch(heading, pitch);
+        bool aimingWithinThresholds = Mathf.DeltaAngle(heading, targetHeading) < headingFireThreshold && Mathf.DeltaAngle(pitch, targetPitch) < pitchFireThreshold;
+        if (aimingWithinThresholds)
+        {
+            Shoot(projectileSpawn.forward);
         }
     }
 
