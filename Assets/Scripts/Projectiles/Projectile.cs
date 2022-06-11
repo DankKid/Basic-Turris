@@ -9,6 +9,14 @@ public class Projectile : MonoBehaviour
     public int damage;
     public int collateralHits;
 
+    private void Update()
+    {
+        if (Vector3.Distance(transform.position, GameManager.I.sphereCenter) >= GameManager.I.sphereRadius)
+        {
+            Destroy(gameObject);
+        }
+    }
+
     private void OnTriggerEnter(Collider collider)
     {
         if (collider.CompareTag("Untagged"))

@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     [Space]
 
     // Reference Config
+    [SerializeField] private Transform sphere;
 
     // Value Config
 
@@ -39,6 +40,8 @@ public class GameManager : MonoBehaviour
 
     // Public NonSerialized
     [NonSerialized] public PlayerManager player;
+    [NonSerialized] public float sphereRadius;
+    [NonSerialized] public Vector3 sphereCenter;
 
     // Private
 
@@ -78,5 +81,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         player = Instantiate(playerPrefab, new Vector3(0, 30, 0), Quaternion.identity);
+        sphereRadius = sphere.transform.localScale.x * 0.0875f;
+        sphereCenter = sphere.transform.position;
     }
 }
