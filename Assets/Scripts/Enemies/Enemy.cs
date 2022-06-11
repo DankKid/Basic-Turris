@@ -59,7 +59,7 @@ public class Enemy : MonoBehaviour
             pointIndex++;
             if (pointIndex == points.Count)
             {
-                soulDamaged();
+                ReachedSoul();
             }
         }
         
@@ -85,7 +85,7 @@ public class Enemy : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private void soulDamaged()
+    private void ReachedSoul()
     {
         GameManager.I.enemy.Remove(this);
         Destroy(gameObject);
