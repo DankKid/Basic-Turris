@@ -453,6 +453,12 @@ MonoBehaviour:
   range: 12
   cannonballSpeed: 24
   fireFrequency: 1
+  recoilDistance: 0
+  recoilTimePercentOfFirePeriod: 0
+  headingMoveSpeed: 150
+  pitchMoveSpeed: 75
+  headingFireThreshold: 5
+  pitchFireThreshold: 2.5
 --- !u!1 &4824202883197242847
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] private Rigidbody rb;
-
     [SerializeField] private float movementHeight;
     [SerializeField] float speed;
     [SerializeField] int startingHealth;
@@ -20,6 +18,12 @@ public class Enemy : MonoBehaviour
         this.points = points;
     }
 
+    public Vector3 GetFuturePosition(float futureDistance)
+    {
+        // Handle case of last point
+        return transform.position;
+    }
+
     private void Awake()
     {
         currentHealth = startingHealth;
@@ -32,16 +36,20 @@ public class Enemy : MonoBehaviour
             Die();
         }
 
+        //TODO REMOVE RB ON THIS WHEN USING LERP FOR EVERYING
+
         Transform target = points[pointIndex];
         Vector3 targetPosition = target.position;
         Vector3 position = transform.position;
 
+        /*
         Vector3 vector = (targetPosition - position).normalized;
         transform.eulerAngles = new Vector3(0, Mathf.Atan2(vector.x, vector.z) * Mathf.Rad2Deg, 0);
 
         Vector3 newPosition = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
         newPosition.y = movementHeight;
         transform.position = newPosition;
+        */
     }
 
 
@@ -61,7 +69,7 @@ public class Enemy : MonoBehaviour
             Projectile projectile = other.GetComponent<Projectile>();
             if (projectile.collateralHits > 0)
             {
-                currentHealth -= projectile.damage;
+                //currentHealth -= projectile.damage;
                 projectile.collateralHits--;
             }
             if (projectile.collateralHits <= 0)

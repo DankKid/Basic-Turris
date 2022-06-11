@@ -42,6 +42,34 @@ public class GameManager : MonoBehaviour
 
     // Private
 
+
+    // When Adding Things, Make Sure To Set
+    /*
+     *  Projectiles:
+     *      Tag: Projectile
+     *      Layer: Ignore Raycast!!!!!!!!!!!
+     *      Give an RB
+     *          No Gravity
+     *          Mass 1
+     *          Drag 0
+     *          Angular Drag 0
+     *          Interpolate: Interpolate
+     *          Collision Detection: Continuous
+     *      Config Projectile Script
+     *      Collider:
+     *          Don't use mesh for performance
+     *          Make a trigger collider
+     *  Turrets:
+     *      Tag: Turret
+     *      Config Turret Script
+     *  Enemies:
+     *      Tag: Enemy
+     *      Config Enemy Script
+     *      Collider:
+     *          Make a trigger collider
+     *  
+    */
+
     private void Awake()
     {
         AwakeSingleton();

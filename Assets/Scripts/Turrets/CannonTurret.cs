@@ -17,25 +17,65 @@ public class CannonTurret : Turret
     [SerializeField] private float cannonballSpeed;
     [SerializeField] private float fireFrequency;
 
+    // TODO Recoil
+    [SerializeField] private float recoilDistance;
+    [SerializeField] private float recoilTimePercentOfFirePeriod;
+
+    [SerializeField] private float headingMoveSpeed;
+    [SerializeField] private float pitchMoveSpeed;
+    [SerializeField] private float headingFireThreshold;
+    [SerializeField] private float pitchFireThreshold;
+
     private double allowedFiringTime = 0;
+    private float currentHeading = 0;
+    private float currentPitch = 0;
+    private float targetHeading = 0;
+    private float targetPitch = 0;
 
     public override void MainInit()
     {
-        
+        // TODO Lerp towards target, go based off distance from and have threshold for shooting at it
     }
 
     public override void MainUpdate()
     {
+        Vector3 direction;
         if (TryFindTarget(out Enemy target))
         {
-            Vector3 vector = (target.transform.position - transform.position).normalized;
-            Shoot(vector);
-            Aim(vector);
+            Vector3 targetPosition = target.GetFuturePosition(0);
+            direction = (targetPosition - transform.position).normalized;
+            Aim(direction);
+
+            float heading = Mathf.MoveTowardsAngle(currentHeading, targetHeading, headingMoveSpeed * Time.deltaTime);
+            float pitch = Mathf.MoveTowardsAngle(currentPitch, targetPitch, pitchMoveSpeed * Time.deltaTime);
+            SetHeadingAndPitch(heading, pitch);
+            bool aimingWithinThresholds = Mathf.DeltaAngle(heading, targetHeading) < headingFireThreshold && Mathf.DeltaAngle(pitch, targetPitch) < pitchFireThreshold;
+            /* UNNECESSARY, but cool, it could technically shoot in crazy directions, the entity could be perpendicular
+             * IF you really want to use this, reacalculate the shooting vector and shoot at the entity that isnt null...
+            bool aimingAtAnEnemy = false;
+            if (!aimingWithinThresholds)
+            {
+                RaycastHit[] hits = Physics.RaycastAll(projectileSpawn.position, projectileSpawn.forward, range);
+                foreach (RaycastHit hit in hits)
+                {
+                    aimingAtAnEnemy = hit.transform.GetComponentInParent<Enemy>() != null;
+                    if (aimingAtAnEnemy)
+                    {
+                        break;
+                    }
+                }
+            }
+            */
+            if (aimingWithinThresholds)
+            {
+                Shoot(direction);
+            }
         }
         else
         {
-            Vector3 vector = (GameManager.I.wave.GetSpawnPoint() - transform.position).normalized;
-            Aim(vector);
+            // TODO Make it smarter, aim where enemies will come from
+            direction = (GameManager.I.wave.GetSpawnPoint() - transform.position).normalized;
+            Aim(direction);
         }
     }
 
@@ -60,11 +100,17 @@ public class CannonTurret : Turret
 
     private void Aim(Vector3 vector)
     {
-        float heading = (Mathf.Atan2(vector.x, vector.z) * Mathf.Rad2Deg) + 90f;
-        float pitch = Mathf.Sin(vector.y) * Mathf.Rad2Deg;
+        targetHeading = (Mathf.Atan2(vector.x, vector.z) * Mathf.Rad2Deg) + 90f;
+        targetPitch = Mathf.Sin(vector.y) * Mathf.Rad2Deg;
+    }
+
+    private void SetHeadingAndPitch(float heading, float pitch)
+    {
+        currentHeading = heading;
+        currentPitch = pitch;
 
         turningPlate.localEulerAngles = new Vector3(0, 0, heading);
-        barrelPivot.localEulerAngles = new Vector3(0, Mathf.Clamp(pitch, -14, 24.5f), 0);
+        barrelPivot.localEulerAngles = new Vector3(0, Mathf.Clamp(Mathf.DeltaAngle(0, pitch), -14, 24.5f), 0);
     }
 
     private void Shoot(Vector3 vector)
@@ -72,6 +118,7 @@ public class CannonTurret : Turret
         double time = Time.timeAsDouble;
         if (time >= allowedFiringTime)
         {
+            // TODO NO CARRYOVER
             allowedFiringTime = time + (1 / fireFrequency);
         }
         else
