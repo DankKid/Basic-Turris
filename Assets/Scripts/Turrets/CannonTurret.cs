@@ -43,38 +43,22 @@ public class CannonTurret : Turret
         if (TryFindTarget(out Enemy target))
         {
             Vector3 targetPosition = target.GetFuturePosition(0);
-            direction = (targetPosition - transform.position).normalized;
+            direction = (targetPosition - projectileSpawn.position).normalized;
             Aim(direction);
 
             float heading = Mathf.MoveTowardsAngle(currentHeading, targetHeading, headingMoveSpeed * Time.deltaTime);
             float pitch = Mathf.MoveTowardsAngle(currentPitch, targetPitch, pitchMoveSpeed * Time.deltaTime);
             SetHeadingAndPitch(heading, pitch);
             bool aimingWithinThresholds = Mathf.DeltaAngle(heading, targetHeading) < headingFireThreshold && Mathf.DeltaAngle(pitch, targetPitch) < pitchFireThreshold;
-            /* UNNECESSARY, but cool, it could technically shoot in crazy directions, the entity could be perpendicular
-             * IF you really want to use this, reacalculate the shooting vector and shoot at the entity that isnt null...
-            bool aimingAtAnEnemy = false;
-            if (!aimingWithinThresholds)
-            {
-                RaycastHit[] hits = Physics.RaycastAll(projectileSpawn.position, projectileSpawn.forward, range);
-                foreach (RaycastHit hit in hits)
-                {
-                    aimingAtAnEnemy = hit.transform.GetComponentInParent<Enemy>() != null;
-                    if (aimingAtAnEnemy)
-                    {
-                        break;
-                    }
-                }
-            }
-            */
             if (aimingWithinThresholds)
             {
-                Shoot(direction);
+                Shoot(projectileSpawn.forward);
             }
         }
         else
         {
             // TODO Make it smarter, aim where enemies will come from
-            direction = (GameManager.I.wave.GetSpawnPoint() - transform.position).normalized;
+            direction = (GameManager.I.wave.GetSpawnPoint() - projectileSpawn.position).normalized;
             Aim(direction);
         }
     }
@@ -86,7 +70,7 @@ public class CannonTurret : Turret
         float closestDistance = float.MaxValue;
         foreach (Enemy enemy in GameManager.I.enemy.Get().Values)
         {
-            float distance = Vector3.Distance(enemy.transform.position, transform.position);
+            float distance = Vector3.Distance(enemy.transform.position, projectileSpawn.position);
             if (distance < range && distance < closestDistance)
             {
                 closestDistance = distance;
