@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    [SerializeField] private Transform target;
     [SerializeField] private float movementHeight;
-    [SerializeField] float speed;
-    [SerializeField] int startingHealth;
+    [SerializeField] private float speed;
+    [SerializeField] private int startingHealth;
 
     private int pointIndex = 0;
     private int currentHealth;
@@ -21,7 +22,7 @@ public class Enemy : MonoBehaviour
     public Vector3 GetFuturePosition(float futureDistance)
     {
         // Handle case of last point
-        return transform.position;
+        return target.position;
     }
 
     private void Awake()
