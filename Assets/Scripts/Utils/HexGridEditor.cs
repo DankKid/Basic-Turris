@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class HexGridEditor : MonoBehaviour
 {
+    [SerializeField] private bool destroyGrid;
     [SerializeField] private bool generateGrid;
 
     [SerializeField] private List<GameObject> prefabs;
@@ -15,27 +17,74 @@ public class HexGridEditor : MonoBehaviour
 
     private void OnValidate()
     {
-        if (generateGrid)
+        if (destroyGrid)
         {
-            generateGrid = false;
+            destroyGrid = false;
 
             hexes.ForEach(h => OnValidateDestroyer.DestroyQueue.Add(h));
             hexes.Clear();
 
-            int rows = (radius * 2) - 1;
-            int topRow = radius;
+            grid.grid.Clear();
+        }
+
+        if (generateGrid)
+        {
+            generateGrid = false;
+
+            int[] offsets = GetOffsets(radius);
+            int y = (radius * 2) - 2;
+            int row = radius - 1;
             for (int i = 0; i < radius; i++)
             {
-
+                row++;
+                int offset = offsets[i];
+                for (int x = offset; x < row + offset; x++)
+                {
+                    PlaceHex(new Vector2Int(x, y));
+                }
+                y--;
             }
             for (int i = 0; i < radius - 1; i++)
             {
-                
+                row--;
+                int offset = offsets[(radius - 2) - i];
+                for (int x = offset; x < row + offset; x++)
+                {
+                    PlaceHex(new Vector2Int(x, y));
+                }
+                y--;
             }
-
-            PlaceHex(Vector2Int.zero);
-
         }
+    }
+
+    /*
+    private GameObject GetCenter()
+    {
+        return grid.grid[grid.grid.Count / 2];
+    }
+    */
+
+    private int[] GetOffsets(int radius)
+    {
+        // TODO REALLY, BRUH?
+        int length = radius;
+        if (radius % 2 == 0)
+        {
+            length++;
+        }
+        List<int> offsets = new();
+        for (int i = 0; i < length; i++)
+        {
+            offsets.Add(i);
+            offsets.Add(i);
+        }
+        if (radius % 2 == 0)
+        {
+            offsets.RemoveAt(0);
+        }
+        offsets = offsets.GetRange(0, radius);
+        offsets.Reverse();
+        return offsets.ToArray();
     }
 
     private void PlaceHex(Vector2Int coords)

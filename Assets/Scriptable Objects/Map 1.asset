@@ -12,7 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b20bd0dca9b6984fb74c2de92873f11, type: 3}
   m_Name: Map 1
   m_EditorClassIdentifier: 
-  grid:
-  - coords: {x: 0, y: 0}
-    prefab: {fileID: 6910091517675176736, guid: 495d1af125ee81e4b9e6202bdeeabfd3,
-      type: 3}
+  grid: []
