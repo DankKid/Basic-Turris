@@ -1,12 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class HexGridEditor : MonoBehaviour
 {
     [SerializeField] private bool newGrid;
     [SerializeField] private bool loadGrid;
+    [SerializeField] private bool resizeGrid;
+    [SerializeField] private bool shiftGrid;
+
+    [SerializeField] private Vector2Int shift;
 
     [SerializeField] private int radius;
     [SerializeField] private HexGrid grid;
@@ -110,6 +115,7 @@ public class HexGridEditor : MonoBehaviour
         switch (prefab)
         {
             case 0:
+                grid.grid[index].yOffset = 0;
                 break;
             case 1:
                 grid.grid[index].yOffset = -0.175f;
@@ -125,77 +131,210 @@ public class HexGridEditor : MonoBehaviour
 
     private void OnValidate()
     {
-        NewGrid();
+        if (newGrid)
+        {
+            newGrid = false;
+
+            NewGrid();
+        }
 
         if (loadGrid)
         {
             loadGrid = false;
 
-            LoadGrid();
+            LoadGrid(new Dictionary<Vector2Int, Hex>());
         }
+
+        if (resizeGrid)
+        {
+            resizeGrid = false;
+
+            ResizeGrid();
+        }
+
+        if (shiftGrid)
+        {
+            shiftGrid = false;
+
+            ShiftGrid();
+        }
+
+        EditorUtility.SetDirty(grid);
+    }
+
+    private void ShiftGrid()
+    {
+        Vector2Int coordOffset = shift;
+        Dictionary<Vector2Int, Hex> overrideWith = new();
+        foreach (Hex hex in grid.grid)
+        {
+            hex.coords += coordOffset;
+            overrideWith.Add(hex.coords, hex);
+        }
+
+        grid.radius = radius;
+
+        grid.grid.Clear();
+
+        int[] offsets = GetOffsets(radius);
+        int y = (radius * 2) - 2;
+        int row = radius - 1;
+        for (int i = 0; i < radius; i++)
+        {
+            row++;
+            int offset = offsets[i];
+            for (int x = offset; x < row + offset; x++)
+            {
+                grid.grid.Add(new Hex()
+                {
+                    coords = new Vector2Int(x, y),
+                    prefab = prefabs[0],
+                    material = materials[0],
+                    yOffset = 0
+                });
+            }
+            y--;
+        }
+        for (int i = 0; i < radius - 1; i++)
+        {
+            row--;
+            int offset = offsets[(radius - 2) - i];
+            for (int x = offset; x < row + offset; x++)
+            {
+                grid.grid.Add(new Hex()
+                {
+                    coords = new Vector2Int(x, y),
+                    prefab = prefabs[0],
+                    material = materials[0],
+                    yOffset = 0
+                });
+            }
+            y--;
+        }
+
+        LoadGrid(overrideWith);
+    }
+
+    private void ResizeGrid()
+    {
+        Vector2Int coordOffset = new(radius - grid.radius, radius - grid.radius);
+        Dictionary<Vector2Int, Hex> overrideWith = new();
+        foreach (Hex hex in grid.grid)
+        {
+            hex.coords += coordOffset;
+            overrideWith.Add(hex.coords, hex);
+        }
+
+        grid.radius = radius;
+
+        grid.grid.Clear();
+
+        int[] offsets = GetOffsets(radius);
+        int y = (radius * 2) - 2;
+        int row = radius - 1;
+        for (int i = 0; i < radius; i++)
+        {
+            row++;
+            int offset = offsets[i];
+            for (int x = offset; x < row + offset; x++)
+            {
+                grid.grid.Add(new Hex()
+                {
+                    coords = new Vector2Int(x, y),
+                    prefab = prefabs[0],
+                    material = materials[0],
+                    yOffset = 0
+                });
+            }
+            y--;
+        }
+        for (int i = 0; i < radius - 1; i++)
+        {
+            row--;
+            int offset = offsets[(radius - 2) - i];
+            for (int x = offset; x < row + offset; x++)
+            {
+                grid.grid.Add(new Hex()
+                {
+                    coords = new Vector2Int(x, y),
+                    prefab = prefabs[0],
+                    material = materials[0],
+                    yOffset = 0
+                });
+            }
+            y--;
+        }
+
+        LoadGrid(overrideWith);
     }
 
     private void NewGrid()
     {
-        if (newGrid)
+        grid.grid.Clear();
+
+        grid.radius = radius;
+
+        int[] offsets = GetOffsets(radius);
+        int y = (radius * 2) - 2;
+        int row = radius - 1;
+        for (int i = 0; i < radius; i++)
         {
-            newGrid = false;
-
-            grid.grid.Clear();
-
-            grid.radius = radius;
-
-            int[] offsets = GetOffsets(radius);
-            int y = (radius * 2) - 2;
-            int row = radius - 1;
-            for (int i = 0; i < radius; i++)
+            row++;
+            int offset = offsets[i];
+            for (int x = offset; x < row + offset; x++)
             {
-                row++;
-                int offset = offsets[i];
-                for (int x = offset; x < row + offset; x++)
+                grid.grid.Add(new Hex()
                 {
-                    grid.grid.Add(new Hex()
-                    {
-                        coords = new Vector2Int(x, y),
-                        prefab = prefabs[0],
-                        material = materials[0],
-                        yOffset = 0
-                    });
-                }
-                y--;
+                    coords = new Vector2Int(x, y),
+                    prefab = prefabs[0],
+                    material = materials[0],
+                    yOffset = 0
+                });
             }
-            for (int i = 0; i < radius - 1; i++)
-            {
-                row--;
-                int offset = offsets[(radius - 2) - i];
-                for (int x = offset; x < row + offset; x++)
-                {
-                    grid.grid.Add(new Hex()
-                    {
-                        coords = new Vector2Int(x, y),
-                        prefab = prefabs[0],
-                        material = materials[0],
-                        yOffset = 0
-                    });
-                }
-                y--;
-            }
-
-            LoadGrid();
+            y--;
         }
+        for (int i = 0; i < radius - 1; i++)
+        {
+            row--;
+            int offset = offsets[(radius - 2) - i];
+            for (int x = offset; x < row + offset; x++)
+            {
+                grid.grid.Add(new Hex()
+                {
+                    coords = new Vector2Int(x, y),
+                    prefab = prefabs[0],
+                    material = materials[0],
+                    yOffset = 0
+                });
+            }
+            y--;
+        }
+
+        LoadGrid(new Dictionary<Vector2Int, Hex>());
     }
 
-    private void LoadGrid()
+    private void LoadGrid(Dictionary<Vector2Int, Hex> overrideWith)
     {
         gridTransform.position = Vector3.zero;
         Vector3 scale = gridTransform.localScale;
         gridTransform.localScale = Vector3.one;
+
+        radius = grid.radius;
 
         hexes.ForEach(h => OnValidateDestroyer.DestroyQueue.Add(h));
         hexes.Clear();
         hexPositions.Clear();
 
         int[] offsets = GetOffsets(grid.radius);
+
+        for (int i = 0; i < grid.grid.Count; i++)
+        {
+            Vector2Int coords = grid.grid[i].coords;
+            if (overrideWith.ContainsKey(coords))
+            {
+                grid.grid[i] = overrideWith[coords];
+            }
+        }
 
         foreach (Hex hex in grid.grid)
         {
