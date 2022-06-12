@@ -323,7 +323,7 @@ MonoBehaviour:
   speed: 5
   startingHealth: 10
   coreDamage: 1
-  deathReward: 1
+  deathReward: 2
 --- !u!54 &3443635782768166674
 Rigidbody:
   m_ObjectHideFlags: 0

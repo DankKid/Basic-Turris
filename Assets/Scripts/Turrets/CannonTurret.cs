@@ -19,7 +19,8 @@ public class CannonTurret : Turret
 
     // TODO Recoil
     [SerializeField] private float recoilDistance;
-    [SerializeField] private float recoilTimePercentOfFirePeriod;
+    [SerializeField] private float recoilScaleFactor;
+    [Range(0, 100)] [SerializeField] private float recoilTimePercentOfFirePeriod;
 
     [SerializeField] private float headingMoveSpeed;
     [SerializeField] private float pitchMoveSpeed;
@@ -27,13 +28,22 @@ public class CannonTurret : Turret
     [SerializeField] private float pitchFireThreshold;
 
     private double allowedFiringTime = 0;
+    private double lastFiringTime = -420;
+
+    private float barrelNominalX;
+    private Vector3 barrelNominalScale;
+
     private float currentHeading = 0;
     private float currentPitch = 0;
     private float targetHeading = 0;
     private float targetPitch = 0;
 
+    private float RecoilTime => (recoilTimePercentOfFirePeriod / 100) * (1 / fireFrequency);
+
     public override void MainInit()
     {
+        barrelNominalX = barrel.localPosition.x;
+        barrelNominalScale = barrel.localScale;
         // TODO Lerp towards target, go based off distance from and have threshold for shooting at it
     }
 
@@ -60,6 +70,29 @@ public class CannonTurret : Turret
         if (target != null && aimingWithinThresholds)
         {
             Shoot(projectileSpawn.forward);
+        }
+
+        double timeSinceLastShot = Time.timeAsDouble - lastFiringTime;
+        float recoilTime = RecoilTime;
+        if (timeSinceLastShot < recoilTime)
+        {
+            // animate
+            float step = (recoilTime - (float)timeSinceLastShot) / recoilTime;
+            float scaledStep = Mathf.Sin(step * Mathf.PI);
+
+            Vector3 barrelPosition = barrel.localPosition;
+            barrelPosition.x = Mathf.Lerp(barrelNominalX, barrelNominalX + recoilDistance, scaledStep);
+            barrel.localPosition = barrelPosition;
+
+            barrel.localScale = Vector3.Lerp(barrelNominalScale, barrelNominalScale * recoilScaleFactor, scaledStep);
+        }
+        else
+        {
+            Vector3 barrelPosition = barrel.localPosition;
+            barrelPosition.x = barrelNominalX;
+            barrel.localPosition = barrelPosition;
+
+            barrel.localScale = barrelNominalScale;
         }
     }
 
@@ -104,6 +137,7 @@ public class CannonTurret : Turret
         {
             // TODO NO CARRYOVER
             allowedFiringTime = time + (1 / fireFrequency);
+            lastFiringTime = time;
         }
         else
         {

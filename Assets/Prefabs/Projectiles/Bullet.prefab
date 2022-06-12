@@ -246,7 +246,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 5303893306378533524}
   damage: 2
-  collateralHits: 2
+  collateralHits: 1
 --- !u!96 &5032906876341565962
 TrailRenderer:
   serializedVersion: 2
