@@ -15,8 +15,17 @@ public class HexGridEditor : MonoBehaviour
     [SerializeField] private List<GameObject> prefabs;
     [SerializeField] private List<Material> materials;
 
+    [SerializeField] private TMPro.TMP_Text selectedMaterialText;
+
     [SerializeField] private List<Vector2Int> hexPositions;
     [SerializeField] private List<GameObject> hexes;
+
+    public Material selectedMaterial;
+
+    private void Awake()
+    {
+        selectedMaterial = materials[0];
+    }
 
     private void Update()
     {
@@ -24,50 +33,95 @@ public class HexGridEditor : MonoBehaviour
         Vector3 scale = gridTransform.localScale;
         gridTransform.localScale = Vector3.one;
 
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            selectedMaterial = materials[0];
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            selectedMaterial = materials[1];
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            selectedMaterial = materials[2];
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            selectedMaterial = materials[3];
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            selectedMaterial = materials[4];
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            selectedMaterial = materials[5];
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha7))
+        {
+            selectedMaterial = materials[6];
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha8))
+        {
+            selectedMaterial = materials[7];
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            selectedMaterial = materials[8];
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            selectedMaterial = materials[9];
+        }
+
+        selectedMaterialText.text = selectedMaterial.name.ToString();
+
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
             int index = hexes.IndexOf(hit.transform.gameObject);
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButton(0))
             {
-                //Replace(index, 0);
+                Replace(index, 0);
             }
-            else if (Input.GetMouseButtonDown(1))
+            else if (Input.GetMouseButton(1))
             {
-                //Replace(index, 1);
+                Replace(index, 1);
             }
         }
 
-        Transform center = GetCenter();
-        gridTransform.position = new Vector3(-center.position.x * scale.x, 0, -center.position.z * scale.z);
+        Vector3 center = GetCenter();
+        gridTransform.position = new Vector3(-center.x * scale.x, 0, -center.z * scale.z);
         gridTransform.localScale = scale;
     }
 
-    /*
     private void Replace(int index, int prefab)
     {
         GameObject oldHex = hexes[index];
         Destroy(oldHex);
         hexes.RemoveAt(index);
+
         GameObject newHex;
-        Vector3 pos = GetHexPos(hexPositions[index]);
+
+        grid.grid[index].prefab = prefabs[prefab];
+        grid.grid[index].material = selectedMaterial;
+
         switch (prefab)
         {
             case 0:
-                newHex = InstantiateHex(prefabs[prefab], pos);
                 break;
             case 1:
-                pos = new Vector3(pos.x, -0.175f, pos.z);
-                newHex = InstantiateHex(prefabs[prefab], pos);
+                grid.grid[index].yOffset = -0.175f;
                 break;
             default:
                 return;
         }
+
+        newHex = InstantiateHex(grid.grid[index]);
+
         hexes.Insert(index, newHex);
-        grid.grid[index].prefab = prefabs[prefab];
     }
-    */
 
     private void OnValidate()
     {
@@ -148,14 +202,14 @@ public class HexGridEditor : MonoBehaviour
             InstantiateHex(hex);
         }
 
-        Transform center = GetCenter();
-        gridTransform.position = new Vector3(-center.position.x * scale.x, 0, -center.position.z * scale.z);
+        Vector3 center = GetCenter();
+        gridTransform.position = new Vector3(-center.x * scale.x, 0, -center.z * scale.z);
         gridTransform.localScale = scale;
     }
 
-    private Transform GetCenter()
+    private Vector3 GetCenter()
     {
-        return hexes[hexes.Count / 2].transform;
+        return GetHexPos(grid.grid[grid.grid.Count / 2].coords);
     }
 
     private int[] GetOffsets(int radius)
