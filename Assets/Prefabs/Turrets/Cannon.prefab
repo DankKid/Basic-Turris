@@ -455,8 +455,9 @@ MonoBehaviour:
   range: 12
   cannonballSpeed: 24
   fireFrequency: 1
-  recoilDistance: 0
-  recoilTimePercentOfFirePeriod: 0
+  recoilDistance: 1
+  recoilScaleFactor: 1.0625
+  recoilTimePercentOfFirePeriod: 75
   headingMoveSpeed: 150
   pitchMoveSpeed: 75
   headingFireThreshold: 5
