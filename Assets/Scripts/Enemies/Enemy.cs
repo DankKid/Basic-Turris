@@ -85,6 +85,7 @@ public class Enemy : MonoBehaviour
         GameManager.I.enemy.Remove(this);
         GameManager.I.player.Coins += deathReward;
         Destroy(gameObject);
+        //PlayerPrefs.SetInt("enemiesKilled", PlayerPrefs.GetInt("enemiesKilled") + 1);
     }
 
     private void DamageCore()
