@@ -6,7 +6,7 @@ using UnityEngine;
 public class HexGridEditor : MonoBehaviour
 {
     [SerializeField] private bool newGrid;
-    [SerializeField] private bool resizeGrid;
+    [SerializeField] private bool loadGrid;
 
     [SerializeField] private int radius;
     [SerializeField] private HexGrid grid;
@@ -73,59 +73,11 @@ public class HexGridEditor : MonoBehaviour
     {
         NewGrid();
 
-        if (resizeGrid)
+        if (loadGrid)
         {
-            resizeGrid = false;
+            loadGrid = false;
 
-            Vector2Int coordOffset = new(radius - grid.radius, radius - grid.radius);
-            Dictionary<Vector2Int, Hex> overrideWith = new();
-            foreach (Hex hex in grid.grid)
-            {
-                hex.coords += coordOffset;
-                overrideWith.Add(hex.coords, hex);
-            }
-
-            grid.radius = radius;
-
-            grid.grid.Clear();
-
-            int[] offsets = GetOffsets(radius);
-            int y = (radius * 2) - 2;
-            int row = radius - 1;
-            for (int i = 0; i < radius; i++)
-            {
-                row++;
-                int offset = offsets[i];
-                for (int x = offset; x < row + offset; x++)
-                {
-                    grid.grid.Add(new Hex()
-                    {
-                        coords = new Vector2Int(x, y),
-                        prefab = prefabs[0],
-                        material = materials[0],
-                        yOffset = 0
-                    });
-                }
-                y--;
-            }
-            for (int i = 0; i < radius - 1; i++)
-            {
-                row--;
-                int offset = offsets[(radius - 2) - i];
-                for (int x = offset; x < row + offset; x++)
-                {
-                    grid.grid.Add(new Hex()
-                    {
-                        coords = new Vector2Int(x, y),
-                        prefab = prefabs[0],
-                        material = materials[0],
-                        yOffset = 0
-                    });
-                }
-                y--;
-            }
-
-            LoadGrid(overrideWith);
+            LoadGrid();
         }
     }
 
@@ -175,11 +127,11 @@ public class HexGridEditor : MonoBehaviour
                 y--;
             }
 
-            LoadGrid(new Dictionary<Vector2Int, Hex>());
+            LoadGrid();
         }
     }
 
-    private void LoadGrid(Dictionary<Vector2Int, Hex> overrideWith)
+    private void LoadGrid()
     {
         gridTransform.position = Vector3.zero;
         Vector3 scale = gridTransform.localScale;
@@ -193,25 +145,7 @@ public class HexGridEditor : MonoBehaviour
 
         foreach (Hex hex in grid.grid)
         {
-            Hex useHex = hex;
-            if (overrideWith.ContainsKey(hex.coords))
-            {
-                useHex = overrideWith[hex.coords];
-                /*
-                int top = (grid.radius * 2) - 2;
-                int distanceFromTop = top - useHex.coords.y;
-                if (useHex.coords.y >= grid.radius - 1)
-                {
-                    useHex.coords.x += offsets[radius - distanceFromTop];
-                }
-                else
-                {
-                    useHex.coords.x += offsets[radius - useHex.coords.y];
-                }
-                */
-            }
-
-            InstantiateHex(useHex);
+            InstantiateHex(hex);
         }
 
         Transform center = GetCenter();
