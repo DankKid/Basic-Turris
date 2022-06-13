@@ -24,22 +24,15 @@ public class EnemyPathGenerator : MonoBehaviour
 
         FirstEnemyWaypoint first = SelectNextFirstWaypoint(enemyType);
         Vector3 start = first.GetPoint(randomLerp, endpointBackoff);
-        NextEnemyWaypoint selected;
+        NextEnemyWaypoint selected = first.SelectNextWaypoint(enemyType);
 
-        while (true)
+        while (!selected.isEnd)
         {
-            selected = first.SelectNextWaypoint(enemyType);
+            Vector3 end = selected.waypoint.GetPoint(randomLerp, endpointBackoff);
+            segments.Add(new EnemyPathSegment(start, end));
+            start = end;
 
-            if (!selected.isEnd)
-            {
-                Vector3 end = selected.waypoint.GetPoint(randomLerp, endpointBackoff);
-                segments.Add(new EnemyPathSegment(start, end));
-                start = end;
-            }
-            else
-            {
-                break;
-            }
+            selected = selected.waypoint.SelectNextWaypoint(enemyType);
         }
 
         return new EnemyPath(segments);

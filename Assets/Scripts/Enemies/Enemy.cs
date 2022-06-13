@@ -7,25 +7,57 @@ public class Enemy : MonoBehaviour
     [SerializeField] private Transform target;
     [SerializeField] private float movementHeight;
     [SerializeField] private float speed;
+    [SerializeField] private float turnSpeed;
     [SerializeField] private int startingHealth;
     [SerializeField] private int coreDamage;
     [SerializeField] private int deathReward;
 
-    private int pointIndex = 0;
     private int currentHealth;
 
-    private List<Transform> points;
+    private EnemyPath path;
+    private double spawnTime = 0;
 
-    public void Init(List<Transform> points)
+    private float currentHeading = 0;
+    private float targetHeading = 0;
+
+    private Vector3 targetOffset;
+
+    public void Init(EnemyPath path)
     {
-        this.points = points;
+        this.path = path;
+        spawnTime = Time.timeAsDouble;
+        targetOffset = target.position - transform.position;
+
+
+        if (path.TryGetPosition(0, speed, out Vector3 position, out Vector3 endpoint))
+        {
+            Vector3 vector = (endpoint - position).normalized;
+            targetHeading = Mathf.Atan2(vector.x, vector.z) * Mathf.Rad2Deg;
+            currentHeading = targetHeading;
+            transform.eulerAngles = new Vector3(0, currentHeading, 0);
+
+            position.y = movementHeight;
+            transform.position = position;
+        }
     }
 
-    public bool TryGetFuturePosition(float futureDistance, out Vector3 position)
+    public bool TryGetFutureTargetPosition(float futureDistance, out Vector3 position)
     {
-        // Handle case of last point
-        position = target.position;
-        return true;
+        if (path.TryGetPosition((float)(Time.timeAsDouble - spawnTime) + futureDistance, speed, out position, out _))
+        {
+            position.y = movementHeight;
+            position += targetOffset;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public Vector3 GetTargetPosition()
+    {
+        return target.position;
     }
 
     private void Awake()
@@ -42,30 +74,25 @@ public class Enemy : MonoBehaviour
 
         //TODO REMOVE RB ON THIS WHEN USING LERP FOR EVERYING
 
-        Transform target = points[pointIndex];
-        Vector3 targetPosition = target.position;
-        Vector3 position = transform.position;
+        if (path.TryGetPosition((float)(Time.timeAsDouble - spawnTime), speed, out Vector3 position, out Vector3 endpoint))
+        {
+            Vector3 vector = (endpoint - position).normalized;
+            targetHeading = Mathf.Atan2(vector.x, vector.z) * Mathf.Rad2Deg;
+            currentHeading = Mathf.MoveTowardsAngle(currentHeading, targetHeading, turnSpeed * Time.deltaTime);
+            transform.eulerAngles = new Vector3(0, currentHeading, 0);
 
-        Vector3 vector = (targetPosition - position).normalized;
-        transform.eulerAngles = new Vector3(0, Mathf.Atan2(vector.x, vector.z) * Mathf.Rad2Deg, 0);
-
-        Vector3 newPosition = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
-        newPosition.y = movementHeight;
-        transform.position = newPosition;
+            position.y = movementHeight;
+            transform.position = position;
+        }
+        else
+        {
+            DamageCore();
+        }
     }
 
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("EnemyPoints"))
-        {
-            pointIndex++;
-            if (pointIndex == points.Count)
-            {
-                DamageCore();
-            }
-        }
-        
         if(other.CompareTag("Projectile"))
         {
             Projectile projectile = other.GetComponent<Projectile>();

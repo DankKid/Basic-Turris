@@ -458,9 +458,9 @@ MonoBehaviour:
   recoilDistance: 1
   recoilScaleFactor: 1.0625
   recoilTimePercentOfFirePeriod: 75
-  headingMoveSpeed: 150
+  headingMoveSpeed: 300
   pitchMoveSpeed: 75
-  headingFireThreshold: 5
+  headingFireThreshold: 2.5
   pitchFireThreshold: 2.5
 --- !u!1 &4824202883197242847
 GameObject:

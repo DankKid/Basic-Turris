@@ -1002,7 +1002,7 @@ MonoBehaviour:
   - waypoint: {fileID: 0}
     isEnd: 1
     isTeleporter: 0
-    enemyTypes: 
+    enemyTypes: 00000000
     weight: 0
   space: 0
 --- !u!1001 &650819875
@@ -3472,9 +3472,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPrefabs:
-  - {fileID: 1248594763090683039, guid: 2986519f7c8aa6b488dfb5b31b30baff, type: 3}
+  - prefab: {fileID: 1248594763090683039, guid: 2986519f7c8aa6b488dfb5b31b30baff,
+      type: 3}
+    endpointBackoff: 1.4602498
   debugging: 1
-  spawnPoint: {fileID: 1126810932}
+  pathGenerator: {fileID: 1760526594}
 --- !u!114 &1760526591
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3530,8 +3532,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firstWaypoints:
   - {fileID: 1720237682}
-  debugEndpointBackoff: 1
-  randomLerpOverride: 0.5
+  debugEndpointBackoff: 0
+  randomLerpOverride: 0
 --- !u!1001 &1834802521
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -1,38 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class WaveManager : MonoBehaviour
 {
-    [SerializeField] private List<Enemy> enemyPrefabs;
+    [SerializeField] private List<SpawnableEnemy> enemyPrefabs;
     [SerializeField] private bool debugging;
-    [SerializeField] private GameObject spawnPoint;
-
-    private List<Transform> points;
+    [SerializeField] private EnemyPathGenerator pathGenerator;
 
     private void Start()
     {
-        points = new();
 
-        Transform pointsTransform = GameObject.Find("Points").transform;
-        for (int i = 1; i < pointsTransform.childCount; i++)
-        {
-            points.Add(pointsTransform.GetChild(i).transform);
-        }
     }
 
     private void Update()
     {
         if(debugging && Input.GetKeyDown(KeyCode.Alpha1))
         {
-            Enemy enemy = Instantiate(enemyPrefabs[0], spawnPoint.transform.position, Quaternion.identity);
-            enemy.Init(points);
-            GameManager.I.enemy.Add(enemy);
+            EnemyPath path = pathGenerator.Generate(EnemyType.BoomBoxRoboBuddy, enemyPrefabs[0].endpointBackoff);
+            if (path.TryGetPosition(0, 0, out Vector3 position, out _))
+            {
+                Enemy enemy = Instantiate(enemyPrefabs[0].prefab, position, Quaternion.identity);
+                enemy.Init(path);
+                GameManager.I.enemy.Add(enemy);
+            }
         }
     }
+}
 
-    public Vector3 GetSpawnPoint()
-    {
-        return spawnPoint.transform.position;
-    }
+[Serializable]
+public class SpawnableEnemy
+{
+    public Enemy prefab;
+    public float endpointBackoff;
 }
