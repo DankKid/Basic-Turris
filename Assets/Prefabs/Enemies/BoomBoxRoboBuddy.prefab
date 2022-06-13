@@ -319,8 +319,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 6252897814125021505}
-  movementHeight: 1
-  speed: 5
+  movementHeight: 0.4
+  speed: 4
+  turnSpeed: 150
   startingHealth: 10
   coreDamage: 1
   deathReward: 2

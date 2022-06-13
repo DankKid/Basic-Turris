@@ -50,22 +50,29 @@ public class CannonTurret : Turret
     public override void MainUpdate()
     {
         Vector3 direction;
-        if (TryFindTarget(out Enemy target) && target.TryGetFuturePosition(0, out Vector3 targetPosition))
+        if (TryFindTarget(out Enemy target))
         {
-            direction = (targetPosition - projectileSpawn.position).normalized;
-            Aim(direction);
+            float projectileTravelTime = Vector3.Distance(projectileSpawn.position, target.GetTargetPosition()) / cannonballSpeed;
+            if (target.TryGetFutureTargetPosition(projectileTravelTime, out Vector3 targetPosition))
+            {
+                direction = (targetPosition - projectileSpawn.position).normalized;
+                Aim(direction);
+            }
         }
+        // Just aim where it last was aiming, nothing fancy
+        /*
         else
         {
-            // TODO Make it smarter, aim where enemies will come from
+            Make it smarter, aim where enemies will come from
             direction = (GameManager.I.wave.GetSpawnPoint() - projectileSpawn.position).normalized;
             Aim(direction);
         }
+        */
 
         float heading = Mathf.MoveTowardsAngle(currentHeading, targetHeading, headingMoveSpeed * Time.deltaTime);
         float pitch = Mathf.MoveTowardsAngle(currentPitch, targetPitch, pitchMoveSpeed * Time.deltaTime);
         SetHeadingAndPitch(heading, pitch);
-        bool aimingWithinThresholds = Mathf.DeltaAngle(heading, targetHeading) < headingFireThreshold && Mathf.DeltaAngle(pitch, targetPitch) < pitchFireThreshold;
+        bool aimingWithinThresholds = Mathf.Abs(Mathf.DeltaAngle(currentHeading, targetHeading)) < headingFireThreshold && Mathf.Abs(Mathf.DeltaAngle(currentPitch, targetPitch)) < pitchFireThreshold;
         if (target != null && aimingWithinThresholds)
         {
             Shoot(projectileSpawn.forward);
