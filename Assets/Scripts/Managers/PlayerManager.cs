@@ -111,6 +111,12 @@ public class PlayerManager : MonoBehaviour
         rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
         Camera.main.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
         transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
+
+
+        if(transform.position.y < -20)
+        {
+            transform.position = new Vector3(0, 25, 0);
+        }
     }
 
     private void Shoot()
