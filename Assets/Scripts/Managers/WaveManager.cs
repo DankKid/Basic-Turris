@@ -18,11 +18,9 @@ public class WaveManager : MonoBehaviour
     {
         if(debugging && Input.GetKeyDown(KeyCode.Alpha1))
         {
-            print("SPAWNDASDSADAS");
             EnemyPath path = pathGenerator.Generate(EnemyType.BoomBoxRoboBuddy, enemyPrefabs[0].endpointBackoff);
             if (path.TryGetPosition(0, 0, out Vector3 position, out _))
             {
-                print("SPAWN");
                 Enemy enemy = Instantiate(enemyPrefabs[0].prefab, position, Quaternion.identity);
                 enemy.Init(path);
                 GameManager.I.enemy.Add(enemy);
