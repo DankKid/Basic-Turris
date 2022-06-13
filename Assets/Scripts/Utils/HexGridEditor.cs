@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
+#if UNITY_EDITOR
 public class HexGridEditor : MonoBehaviour
 {
     [SerializeField] private bool newGrid;
@@ -398,3 +399,4 @@ public class HexGridEditor : MonoBehaviour
         return newHex;
     }
 }
+#endif
