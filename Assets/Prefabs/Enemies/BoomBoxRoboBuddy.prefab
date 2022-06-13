@@ -320,11 +320,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 6252897814125021505}
   movementHeight: 0.4
-  speed: 16
-  turnSpeed: 150
-  startingHealth: 100000
+  speed: 5
+  turnSpeed: 30
+  startingHealth: 10
   coreDamage: 1
-  deathReward: 10000
+  deathReward: 2
 --- !u!54 &3443635782768166674
 Rigidbody:
   m_ObjectHideFlags: 0

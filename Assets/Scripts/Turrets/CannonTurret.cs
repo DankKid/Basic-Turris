@@ -48,7 +48,6 @@ public class CannonTurret : Turret
     {
         barrelNominalX = barrel.localPosition.x;
         barrelNominalScale = barrel.localScale;
-        // TODO Lerp towards target, go based off distance from and have threshold for shooting at it
     }
 
     public override void MainUpdate()
@@ -62,24 +61,9 @@ public class CannonTurret : Turret
                 Aim(direction);
             }
 
-            // TODO Ensure it aims to next enemy if it is impossible to hit an enemy before it goes out of range
             bool smartPredictorFailed = true;
             if (smartPredictorEnabled)
             {
-                // Premature optimization is evil
-                /*
-                float currentDistance = Vector3.Distance(target.GetTargetPosition(), projectileSpawn.position);
-                float currentTimeToReach = currentDistance / cannonballSpeed;
-                float maxPossibleDistanceDelta = (target.GetSpeed() * currentTimeToReach);
-                float minFutureDistance = Mathf.Max(0, currentDistance - maxPossibleDistanceDelta);
-                float maxFutureDistance = currentDistance + maxPossibleDistanceDelta;
-                float minTimeToReach = minFutureDistance / cannonballSpeed;
-                float maxTimeToReach = maxFutureDistance / cannonballSpeed;
-
-                float startT = Mathf.Min(minTimeToReach, smartPredictorTime);
-                float stopT = Mathf.Min(maxTimeToReach, smartPredictorTime);
-                */
-
                 // Could add check until no more decreases
 
                 float smartPredictorTime = range / cannonballSpeed;
@@ -122,15 +106,6 @@ public class CannonTurret : Turret
                 }
             }
         }
-        // Just aim where it last was aiming, nothing fancy
-        /*
-        else
-        {
-            Make it smarter, aim where enemies will come from
-            direction = (GameManager.I.wave.GetSpawnPoint() - projectileSpawn.position).normalized;
-            Aim(direction);
-        }
-        */
 
         float heading = Mathf.MoveTowardsAngle(currentHeading, targetHeading, headingMoveSpeed * Time.deltaTime);
         float pitch = Mathf.MoveTowardsAngle(currentPitch, targetPitch, pitchMoveSpeed * Time.deltaTime);
@@ -145,7 +120,6 @@ public class CannonTurret : Turret
         float recoilTime = RecoilTime;
         if (timeSinceLastShot < recoilTime)
         {
-            // animate
             float step = (recoilTime - (float)timeSinceLastShot) / recoilTime;
             float scaledStep = Mathf.Sin(step * Mathf.PI);
 

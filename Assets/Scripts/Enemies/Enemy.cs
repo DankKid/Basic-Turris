@@ -84,7 +84,7 @@ public class Enemy : MonoBehaviour
         {
             Vector3 vector = (endpoint - position).normalized;
             targetHeading = Mathf.Atan2(vector.x, vector.z) * Mathf.Rad2Deg;
-            currentHeading = Mathf.MoveTowardsAngle(currentHeading, targetHeading, turnSpeed * Time.deltaTime);
+            currentHeading = Mathf.MoveTowardsAngle(currentHeading, targetHeading, speed * turnSpeed * Time.deltaTime);
             transform.eulerAngles = new Vector3(0, currentHeading, 0);
 
             position.y = movementHeight;
