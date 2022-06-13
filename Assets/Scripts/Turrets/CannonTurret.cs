@@ -50,9 +50,8 @@ public class CannonTurret : Turret
     public override void MainUpdate()
     {
         Vector3 direction;
-        if (TryFindTarget(out Enemy target))
+        if (TryFindTarget(out Enemy target) && target.TryGetFuturePosition(0, out Vector3 targetPosition))
         {
-            Vector3 targetPosition = target.GetFuturePosition(0);
             direction = (targetPosition - projectileSpawn.position).normalized;
             Aim(direction);
         }

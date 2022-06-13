@@ -21,10 +21,11 @@ public class Enemy : MonoBehaviour
         this.points = points;
     }
 
-    public Vector3 GetFuturePosition(float futureDistance)
+    public bool TryGetFuturePosition(float futureDistance, out Vector3 position)
     {
         // Handle case of last point
-        return target.position;
+        position = target.position;
+        return true;
     }
 
     private void Awake()
