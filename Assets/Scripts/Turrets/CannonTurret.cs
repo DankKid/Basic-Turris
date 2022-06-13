@@ -27,6 +27,10 @@ public class CannonTurret : Turret
     [SerializeField] private float headingFireThreshold;
     [SerializeField] private float pitchFireThreshold;
 
+    [SerializeField] private bool smartPredictorEnabled;
+    [SerializeField] private float smartPredictorIncrement;
+    [SerializeField] private float smartPredictorMinTimeDelta;
+
     private double allowedFiringTime = 0;
     private double lastFiringTime = -420;
 
@@ -52,11 +56,70 @@ public class CannonTurret : Turret
         Vector3 direction;
         if (TryFindTarget(out Enemy target))
         {
-            float projectileTravelTime = Vector3.Distance(projectileSpawn.position, target.GetTargetPosition()) / cannonballSpeed;
-            if (target.TryGetFutureTargetPosition(projectileTravelTime, out Vector3 targetPosition))
+            void AimAtTarget(Vector3 targetPosition)
             {
                 direction = (targetPosition - projectileSpawn.position).normalized;
                 Aim(direction);
+            }
+
+            // TODO Ensure it aims to next enemy if it is impossible to hit an enemy before it goes out of range
+            bool smartPredictorFailed = true;
+            if (smartPredictorEnabled)
+            {
+                // Premature optimization is evil
+                /*
+                float currentDistance = Vector3.Distance(target.GetTargetPosition(), projectileSpawn.position);
+                float currentTimeToReach = currentDistance / cannonballSpeed;
+                float maxPossibleDistanceDelta = (target.GetSpeed() * currentTimeToReach);
+                float minFutureDistance = Mathf.Max(0, currentDistance - maxPossibleDistanceDelta);
+                float maxFutureDistance = currentDistance + maxPossibleDistanceDelta;
+                float minTimeToReach = minFutureDistance / cannonballSpeed;
+                float maxTimeToReach = maxFutureDistance / cannonballSpeed;
+
+                float startT = Mathf.Min(minTimeToReach, smartPredictorTime);
+                float stopT = Mathf.Min(maxTimeToReach, smartPredictorTime);
+                */
+
+                // Could add check until no more decreases
+
+                float smartPredictorTime = range / cannonballSpeed;
+                for (float t = 0; t <= smartPredictorTime; t += smartPredictorIncrement)
+                {
+                    if (!target.TryGetFutureTargetPosition(t, out Vector3 positionAtTime))
+                    {
+                        break;
+                    }
+
+                    float distanceAtTime = Vector3.Distance(projectileSpawn.position, positionAtTime);
+                    float timeToReach = distanceAtTime / cannonballSpeed;
+                    float timeDelta = Mathf.Abs(t - timeToReach);
+                    if (timeDelta <= smartPredictorMinTimeDelta)
+                    {
+                        if (distanceAtTime < range)
+                        {
+                            AimAtTarget(positionAtTime);
+                            smartPredictorFailed = false;
+                        }
+                        break;
+                    }
+                }
+
+                if (smartPredictorFailed)
+                {
+                    target = null;
+                }
+            }
+            else
+            {
+                float projectileTravelTime = Vector3.Distance(projectileSpawn.position, target.GetTargetPosition()) / cannonballSpeed;
+                if (target.TryGetFutureTargetPosition(projectileTravelTime, out Vector3 targetPosition) && Vector3.Distance(projectileSpawn.position, targetPosition) < range)
+                {
+                    AimAtTarget(targetPosition);
+                }
+                else
+                {
+                    target = null;
+                }
             }
         }
         // Just aim where it last was aiming, nothing fancy
@@ -109,7 +172,7 @@ public class CannonTurret : Turret
         float closestDistance = float.MaxValue;
         foreach (Enemy enemy in GameManager.I.enemy.Get().Values)
         {
-            float distance = Vector3.Distance(enemy.transform.position, projectileSpawn.position);
+            float distance = Vector3.Distance(enemy.GetTargetPosition(), projectileSpawn.position);
             if (distance < range && distance < closestDistance)
             {
                 closestDistance = distance;

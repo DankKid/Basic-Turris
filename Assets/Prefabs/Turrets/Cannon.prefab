@@ -462,6 +462,9 @@ MonoBehaviour:
   pitchMoveSpeed: 75
   headingFireThreshold: 2.5
   pitchFireThreshold: 2.5
+  smartPredictorEnabled: 1
+  smartPredictorIncrement: 0.025
+  smartPredictorMinTimeDelta: 0.05
 --- !u!1 &4824202883197242847
 GameObject:
   m_ObjectHideFlags: 0

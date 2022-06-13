@@ -60,6 +60,12 @@ public class Enemy : MonoBehaviour
         return target.position;
     }
 
+    public float GetSpeed()
+    {
+        return speed;
+    }
+
+
     private void Awake()
     {
         currentHealth = startingHealth;
