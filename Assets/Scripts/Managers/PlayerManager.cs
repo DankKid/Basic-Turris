@@ -25,6 +25,8 @@ public class PlayerManager : MonoBehaviour
     [Space]
     [SerializeField] private int startingCoreHealth;
 
+    private GameObject buildingUI;
+
     public bool isBuilding;
     private int coins;
     public int Coins
@@ -73,6 +75,8 @@ public class PlayerManager : MonoBehaviour
 
         Coins = 0;
         CoreHealth = startingCoreHealth;
+        buildingUI = GameObject.Find("BuildingUI");
+        buildingUI.SetActive(false);
     }
 
     private void Update()
@@ -80,16 +84,9 @@ public class PlayerManager : MonoBehaviour
         Move();
         Shoot();
 
-        if(Input.GetKeyDown(KeyCode.Tab) && isBuilding)
-        {
-            isBuilding = false;
-            Debug.Log("Not Building!");
-        }
-        else if(Input.GetKeyDown(KeyCode.Tab) && !isBuilding)
-        {
-            isBuilding = true;
-            Debug.Log("Building!");
-        }
+        BuildMode();
+
+        
     }
 
     private void Move()
@@ -142,6 +139,23 @@ public class PlayerManager : MonoBehaviour
             bullet.rb.velocity = characterController.velocity;
             bullet.rb.AddRelativeForce(Vector3.down * bulletSpeed, ForceMode.VelocityChange);
             GameManager.I.projectile.Add(bullet);
+        }
+    }
+
+    private void BuildMode()
+    {
+        
+        if (Input.GetKeyDown(KeyCode.Tab) && isBuilding)
+        {
+            isBuilding = false;
+            Debug.Log("Not Building!");
+            buildingUI.SetActive(false);
+        }
+        else if (Input.GetKeyDown(KeyCode.Tab) && !isBuilding)
+        {
+            isBuilding = true;
+            Debug.Log("Building!");
+            buildingUI.SetActive(true);
         }
     }
 }
