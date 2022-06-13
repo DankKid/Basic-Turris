@@ -14,41 +14,8 @@ public class EnemyWaypoint : MonoBehaviour
 
     public List<NextEnemyWaypoint> next;
 
-    #region Space
-    [Space]
-    [Space]
-    [Space]
-    [Space]
-    [Space]
-    [Space]
-    [Space]
-    [Space]
-    [Space]
-    [Space]
-    [Space]
-    [Space]
-    [Space]
-    [Space]
-    [Space]
-    [Space]
-    [Space]
-    [Space]
-    [Space]
-    [Space]
-    [Space]
-    [Space]
-    [Space]
-    [Space]
-    [Space]
-    [Space]
-    [Space]
-    [Space]
-    [Space]
-    [Space]
-    [Space]
-    [Space]
-    public float space;
-    #endregion Space
+    [Space(400)]
+    public bool space;
 
     public NextEnemyWaypoint SelectNextWaypoint(EnemyType enemyType)
     {
@@ -116,17 +83,7 @@ public class EnemyWaypoint : MonoBehaviour
 [Serializable]
 public class NextEnemyWaypoint
 {
-    #region Space
-    [Space]
-    [Space]
-    [Space]
-    [Space]
-    [Space]
-    [Space]
-    [Space]
-    [Space]
-    #endregion Space
-
+    [Space(100)]
     public EnemyWaypoint waypoint;
     public bool isEnd;
     public bool isTeleporter;

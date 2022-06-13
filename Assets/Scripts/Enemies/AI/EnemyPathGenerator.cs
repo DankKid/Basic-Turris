@@ -6,7 +6,8 @@ using Random = UnityEngine.Random;
 
 public class EnemyPathGenerator : MonoBehaviour
 {
-    [SerializeField] private List<FirstEnemyWaypoint> firstWaypoints;
+    //[SerializeField] private List<FirstEnemyWaypoint> firstWaypoints;
+    [SerializeField] private EnemyWaypoint firstWaypoints;
 
     [SerializeField] private bool debugEndpointBackoff;
     [SerializeField] private float randomLerpOverride;
@@ -22,9 +23,8 @@ public class EnemyPathGenerator : MonoBehaviour
 
         List<EnemyPathSegment> segments = new();
 
-        FirstEnemyWaypoint first = SelectNextFirstWaypoint(enemyType);
-        Vector3 start = first.GetPoint(randomLerp, endpointBackoff);
-        NextEnemyWaypoint selected = first.SelectNextWaypoint(enemyType);
+        NextEnemyWaypoint selected = firstWaypoints.SelectNextWaypoint(enemyType);
+        Vector3 start = selected.waypoint.GetPoint(randomLerp, endpointBackoff);
 
         while (!selected.isEnd)
         {
@@ -38,6 +38,7 @@ public class EnemyPathGenerator : MonoBehaviour
         return new EnemyPath(segments);
     }
 
+    /*
     public FirstEnemyWaypoint SelectNextFirstWaypoint(EnemyType enemyType)
     {
         List<FirstEnemyWaypoint> possibleFirstWaypoints = firstWaypoints.FindAll(
@@ -73,29 +74,5 @@ public class EnemyPathGenerator : MonoBehaviour
 
         return selected;
     }
-
-    /*
-    public NextEnemyWaypoint FindPath(List<EnemyWaypoint> waypoints, EnemyType enemyType)
-    {
-        List<NextEnemyWaypoint> possiblePaths = new();
-        float weightSum = 0;
-
-        foreach (EnemyWaypoint path in paths)
-        {
-            foreach (NextEnemyWaypoint nextPath in path.next)
-            {
-                if (nextPath.enemyTypes.Contains(enemyType))
-                {
-                    possiblePaths.Add(nextPath);
-                    weightSum += nextPath.weight;
-                }
-            }
-        }
-
-        float select
-    }
     */
-
-
-    //public bool TryGet
 }
