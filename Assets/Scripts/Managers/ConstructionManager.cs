@@ -27,29 +27,33 @@ public class ConstructionManager : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit, reachDistance))
         {
-            if (hit.transform.TryGetComponent(out hexBase))
-            {
-                if (Input.GetMouseButtonDown(1))
+            
+                if (hit.transform.TryGetComponent(out hexBase))
                 {
-                    hexBase.TryConstructTurret(turretPrefabs[0]);
-                }
-                else if (Input.GetMouseButtonDown(2))
-                {
-                    hexBase.TryDeconstructTurret();
-                }
-            }
-            else
-            {
-                Turret turret = hit.transform.GetComponentInParent<Turret>();
-                if (turret != null)
-                {
-                    hexBase = turret.HexBase;
-                    if (Input.GetMouseButtonDown(2))
+                    if (Input.GetMouseButtonDown(0) && GameManager.I.player.isBuilding)
+                    {
+                        hexBase.TryConstructTurret(turretPrefabs[0]);
+                    Debug.Log("BUILD");
+                    }
+                    else if (Input.GetMouseButtonDown(1) && GameManager.I.player.isBuilding)
                     {
                         hexBase.TryDeconstructTurret();
                     }
                 }
-            }
+                else
+                {
+                    Turret turret = hit.transform.GetComponentInParent<Turret>();
+                    if (turret != null)
+                    {
+                        hexBase = turret.HexBase;
+                        if (Input.GetMouseButtonDown(1) && GameManager.I.player.isBuilding)
+                        {
+                            hexBase.TryDeconstructTurret();
+                        }
+                    }
+                }
+            
+            
         }
 
         UpdateHexBaseHighlights(hexBase);

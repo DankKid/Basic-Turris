@@ -25,6 +25,7 @@ public class PlayerManager : MonoBehaviour
     [Space]
     [SerializeField] private int startingCoreHealth;
 
+    public bool isBuilding;
     private int coins;
     public int Coins
     {
@@ -78,6 +79,17 @@ public class PlayerManager : MonoBehaviour
     {
         Move();
         Shoot();
+
+        if(Input.GetKeyDown(KeyCode.Tab) && isBuilding)
+        {
+            isBuilding = false;
+            Debug.Log("Not Building!");
+        }
+        else if(Input.GetKeyDown(KeyCode.Tab) && !isBuilding)
+        {
+            isBuilding = true;
+            Debug.Log("Building!");
+        }
     }
 
     private void Move()
@@ -122,7 +134,7 @@ public class PlayerManager : MonoBehaviour
     private void Shoot()
     {
         double time = Time.timeAsDouble;
-        if (Input.GetMouseButtonDown(0) && time >= allowedFiringTime)
+        if (Input.GetMouseButtonDown(0) && time >= allowedFiringTime && !isBuilding)
         {
             allowedFiringTime = time + (1 / fireFrequency);
 
