@@ -25,6 +25,7 @@ public class EnemyPathGenerator : MonoBehaviour
 
         NextEnemyWaypoint selected = firstWaypoints.SelectNextWaypoint(enemyType);
         Vector3 start = selected.waypoint.GetPoint(randomLerp, endpointBackoff);
+        selected = selected.waypoint.SelectNextWaypoint(enemyType);
 
         while (!selected.isEnd)
         {
