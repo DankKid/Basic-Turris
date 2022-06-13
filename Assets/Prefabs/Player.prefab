@@ -346,7 +346,7 @@ MonoBehaviour:
   lookXLimit: 90
   momentumLerp: 0.8
   fireFrequency: 4
-  bulletSpeed: 32
+  bulletSpeed: 48
   startingCoreHealth: 50
 --- !u!1 &436699520003952554
 GameObject:
