@@ -51,8 +51,15 @@ public class HexGridEditorPlayer : MonoBehaviour
 
         if (characterController.isGrounded && Input.GetButtonDown("Jump"))
             moveDirection.y = jumpSpeed;
+        else if(characterController.isGrounded && Input.GetKeyDown(KeyCode.Tab))
+            moveDirection.y = jumpSpeed * 5;
         else
             moveDirection.y = movementDirectionY;
+        
+
+
+
+
 
         if (!characterController.isGrounded)
             moveDirection.y -= gravity * Time.deltaTime;

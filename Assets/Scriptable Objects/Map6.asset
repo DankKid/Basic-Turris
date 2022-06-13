@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5b20bd0dca9b6984fb74c2de92873f11, type: 3}
-  m_Name: Map 1
+  m_Name: Map6
   m_EditorClassIdentifier: 
   radius: 16
   grid:
@@ -1517,7 +1517,7 @@ MonoBehaviour:
   - coords: {x: 15, y: 17}
     prefab: {fileID: 6910091517675176736, guid: 495d1af125ee81e4b9e6202bdeeabfd3,
       type: 3}
-    material: {fileID: 2100000, guid: d6c9ea44b2f23a64ca93399f0f095519, type: 2}
+    material: {fileID: 2100000, guid: 01f4177b6619c8441860284918fe9854, type: 2}
     yOffset: 0
   - coords: {x: 16, y: 17}
     prefab: {fileID: 6910091517675176736, guid: 495d1af125ee81e4b9e6202bdeeabfd3,
