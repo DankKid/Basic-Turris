@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using TMPro;
+using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     #region Singleton
@@ -86,4 +87,28 @@ public class GameManager : MonoBehaviour
         sphereRadius = sphere.transform.localScale.x * 0.0875f;
         sphereCenter = sphere.transform.position;
     }
+
+    public void Pause()
+    {
+        GameManager.I.player.isPaused = true;
+        GameManager.I.player.pauseMenu.SetActive(true);
+        Time.timeScale = 0;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    public void Unpause()
+    {
+        GameManager.I.player.isPaused = false;
+        GameManager.I.player.pauseMenu.SetActive(false);
+        Time.timeScale = 1;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
+    public void ReturnToMain()
+    {
+        SceneManager.LoadScene(0);
+    }
+
 }

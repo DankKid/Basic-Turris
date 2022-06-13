@@ -26,8 +26,9 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private int startingCoreHealth;
 
     private GameObject buildingUI;
-
+    public GameObject pauseMenu;
     public bool isBuilding;
+    public bool isPaused;
     private int coins;
     public int Coins
     {
@@ -77,6 +78,8 @@ public class PlayerManager : MonoBehaviour
         CoreHealth = startingCoreHealth;
         buildingUI = GameObject.Find("BuildingUI");
         buildingUI.SetActive(false);
+        pauseMenu = GameObject.Find("PauseMenu");
+        pauseMenu.SetActive(false);
     }
 
     private void Update()
@@ -85,8 +88,18 @@ public class PlayerManager : MonoBehaviour
         Shoot();
 
         BuildMode();
-
         
+
+        if (Input.GetKeyDown(KeyCode.Escape) && isPaused)
+        {
+            GameManager.I.Unpause();
+        }
+        else if (Input.GetKeyDown(KeyCode.Escape) && !isPaused)
+        {
+            GameManager.I.Pause();
+        }
+
+
     }
 
     private void Move()
@@ -116,10 +129,13 @@ public class PlayerManager : MonoBehaviour
 
         characterController.Move(moveDirection * Time.deltaTime);
 
-        rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
-        rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
-        Camera.main.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
-        transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
+        if (!isPaused)
+        {
+            rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
+            rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
+            Camera.main.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
+            transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
+        }
 
 
         if(transform.position.y < -20)
@@ -131,7 +147,7 @@ public class PlayerManager : MonoBehaviour
     private void Shoot()
     {
         double time = Time.timeAsDouble;
-        if (Input.GetMouseButtonDown(0) && time >= allowedFiringTime && !isBuilding)
+        if (Input.GetMouseButtonDown(0) && time >= allowedFiringTime && !isBuilding && !isPaused)
         {
             allowedFiringTime = time + (1 / fireFrequency);
 
@@ -158,4 +174,8 @@ public class PlayerManager : MonoBehaviour
             buildingUI.SetActive(true);
         }
     }
+
+
+
+
 }

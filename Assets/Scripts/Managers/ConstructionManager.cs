@@ -25,17 +25,17 @@ public class ConstructionManager : MonoBehaviour
         HexBase hexBase = null;
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit hit, reachDistance))
+        if (Physics.Raycast(ray, out RaycastHit hit, reachDistance) && GameManager.I.player.isBuilding && !GameManager.I.player.isPaused)
         {
             
                 if (hit.transform.TryGetComponent(out hexBase))
                 {
-                    if (Input.GetMouseButtonDown(0) && GameManager.I.player.isBuilding)
+                    if (Input.GetMouseButtonDown(0))
                     {
                         hexBase.TryConstructTurret(turretPrefabs[0]);
                     Debug.Log("BUILD");
                     }
-                    else if (Input.GetMouseButtonDown(1) && GameManager.I.player.isBuilding)
+                    else if (Input.GetMouseButtonDown(1))
                     {
                         hexBase.TryDeconstructTurret();
                     }
@@ -46,7 +46,7 @@ public class ConstructionManager : MonoBehaviour
                     if (turret != null)
                     {
                         hexBase = turret.HexBase;
-                        if (Input.GetMouseButtonDown(1) && GameManager.I.player.isBuilding)
+                        if (Input.GetMouseButtonDown(1))
                         {
                             hexBase.TryDeconstructTurret();
                         }
