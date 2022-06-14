@@ -4,8 +4,8 @@ using UnityEngine;
 
 public abstract class Turret : MonoBehaviour
 {
-    [SerializeField] private float buildAnimationTime;
-
+    [Header("Construction Config")]
+    [SerializeField] private float constructAnimationTime;
     public int constructionCost;
     public int deconstructionRefund;
 
@@ -26,31 +26,38 @@ public abstract class Turret : MonoBehaviour
 
         MainInit();
     }
+
     private void Update()
     {
         if (IsConstructing || IsDeconstructing)
         {
-            float animationStep = (float)((Time.timeAsDouble - constructAnimationStartTime) / buildAnimationTime);
-            transform.localScale = Vector3.Lerp(startScale, endScale, animationStep);
-            if (animationStep >= 1)
-            {
-                transform.localScale = endScale;
-                if (IsConstructing)
-                {
-                    IsConstructing = false;
-                }
-                if (IsDeconstructing)
-                {
-                    HexBase.FinishDeconstruct();
-                    Destroy(gameObject);
-                }
-            }
+            AnimateConstruction();
         }
 
 
         if (!IsConstructing && !IsDeconstructing)
         {
             MainUpdate();
+        }
+    }
+
+    #region Construction
+    private void AnimateConstruction()
+    {
+        float animationStep = (float)((Time.timeAsDouble - constructAnimationStartTime) / constructAnimationTime);
+        transform.localScale = Vector3.Lerp(startScale, endScale, animationStep);
+        if (animationStep >= 1)
+        {
+            transform.localScale = endScale;
+            if (IsConstructing)
+            {
+                IsConstructing = false;
+            }
+            if (IsDeconstructing)
+            {
+                HexBase.FinishDeconstruct();
+                Destroy(gameObject);
+            }
         }
     }
     private void Construct()
@@ -73,6 +80,8 @@ public abstract class Turret : MonoBehaviour
         startScale = transform.localScale;
         endScale = Vector3.zero;
     }
+    #endregion Construction
+
 
     public abstract void MainInit();
     public abstract void MainUpdate();

@@ -443,10 +443,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a479f3fc2348edc4d99c1ab699177eda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildAnimationTime: 1.5
+  constructAnimationTime: 1.5
   constructionCost: 5
   deconstructionRefund: 2
-  cannonballPrefab: {fileID: -5408173710148620022, guid: 1a80b8ffdc31f1d41aac2ca6e37e37ae,
+  projectilePrefab: {fileID: -5408173710148620022, guid: 1a80b8ffdc31f1d41aac2ca6e37e37ae,
     type: 3}
   turningPlate: {fileID: 4669176094810709742}
   barrelPivot: {fileID: 784131622127073425}
@@ -458,13 +458,14 @@ MonoBehaviour:
   recoilDistance: 1
   recoilScaleFactor: 1.0625
   recoilTimePercentOfFirePeriod: 75
-  headingMoveSpeed: 300
-  pitchMoveSpeed: 75
+  headingMoveSpeed: 270
+  pitchMoveSpeed: 90
   headingFireThreshold: 2.5
   pitchFireThreshold: 2.5
   smartPredictorEnabled: 1
   smartPredictorIncrement: 0.025
   smartPredictorMinTimeDelta: 0.05
+  superAimEnabled: 1
 --- !u!1 &4824202883197242847
 GameObject:
   m_ObjectHideFlags: 0

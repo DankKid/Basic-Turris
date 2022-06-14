@@ -6,7 +6,7 @@ public class CannonTurret : Turret
 {
     // Pitch: -14 to 24.5
 
-    [SerializeField] private Projectile cannonballPrefab;
+    [SerializeField] private Projectile projectilePrefab;
 
     [SerializeField] private Transform turningPlate;
     [SerializeField] private Transform barrelPivot;
@@ -75,10 +75,10 @@ public class CannonTurret : Turret
                     if (superAimEnabled)
                     {
                         float timeToFire = Mathf.Max(0, (float)(allowedFiringTime - Time.timeAsDouble));
-                        (float headingAtTime, float pitchAtTime) = Aim(positionAtTime);
-                        float timeToMoveHeading = Mathf.Min(Mathf.Abs(Mathf.DeltaAngle(currentHeading, headingAtTime + headingFireThreshold)), Mathf.Abs(Mathf.DeltaAngle(currentHeading, headingAtTime - headingFireThreshold))) / headingMoveSpeed;
-                        float timeToMovePitch = Mathf.Min(Mathf.Abs(Mathf.DeltaAngle(currentPitch, pitchAtTime + pitchFireThreshold)), Mathf.Abs(Mathf.DeltaAngle(currentPitch, pitchAtTime - pitchFireThreshold))) / pitchMoveSpeed;
-                        timeToReach += Mathf.Max(timeToFire, timeToMoveHeading, timeToMovePitch);
+                        //(float headingAtTime, float pitchAtTime) = Aim(positionAtTime);
+                        //float timeToMoveHeading = Mathf.Min(Mathf.Abs(Mathf.DeltaAngle(currentHeading, headingAtTime + headingFireThreshold)), Mathf.Abs(Mathf.DeltaAngle(currentHeading, headingAtTime - headingFireThreshold))) / headingMoveSpeed;
+                        //float timeToMovePitch = Mathf.Min(Mathf.Abs(Mathf.DeltaAngle(currentPitch, pitchAtTime + pitchFireThreshold)), Mathf.Abs(Mathf.DeltaAngle(currentPitch, pitchAtTime - pitchFireThreshold))) / pitchMoveSpeed;
+                        timeToReach += timeToFire; //Mathf.Max(timeToFire, timeToMoveHeading, timeToMovePitch);
                     }
                     float timeDelta = Mathf.Abs(t - timeToReach);
                     if (timeDelta <= smartPredictorMinTimeDelta)
@@ -193,7 +193,7 @@ public class CannonTurret : Turret
             return;
         }
 
-        Projectile bullet = Instantiate(cannonballPrefab, projectileSpawn.position, Quaternion.identity);
+        Projectile bullet = Instantiate(projectilePrefab, projectileSpawn.position, Quaternion.identity);
         bullet.rb.AddRelativeForce(vector * cannonballSpeed, ForceMode.VelocityChange);
         GameManager.I.projectile.Add(bullet);
     }

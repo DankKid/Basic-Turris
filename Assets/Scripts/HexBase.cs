@@ -17,6 +17,7 @@ public class HexBase : MonoBehaviour
         
     }
 
+    #region Highlighting
     public void Highlight(Material highlightMaterial)
     {
         meshRenderer.material = highlightMaterial;
@@ -25,7 +26,8 @@ public class HexBase : MonoBehaviour
     {
         meshRenderer.material = nominalMaterial;
     }
-
+    #endregion Highlighting
+    #region Construction
     public bool TryConstructTurret(Turret turretPrefab)
     {
         if (IsOccupied)
@@ -59,9 +61,9 @@ public class HexBase : MonoBehaviour
 
         return true;
     }
-
     public void FinishDeconstruct()
     {
         IsOccupied = false;
     }
+    #endregion Construction
 }
