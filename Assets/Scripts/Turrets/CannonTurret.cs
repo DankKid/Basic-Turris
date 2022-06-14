@@ -17,7 +17,6 @@ public class CannonTurret : Turret
     [SerializeField] private float cannonballSpeed;
     [SerializeField] private float fireFrequency;
 
-    // TODO Recoil
     [SerializeField] private float recoilDistance;
     [SerializeField] private float recoilScaleFactor;
     [Range(0, 100)] [SerializeField] private float recoilTimePercentOfFirePeriod;
@@ -30,6 +29,8 @@ public class CannonTurret : Turret
     [SerializeField] private bool smartPredictorEnabled;
     [SerializeField] private float smartPredictorIncrement;
     [SerializeField] private float smartPredictorMinTimeDelta;
+
+    [SerializeField] private bool superAimEnabled;
 
     private double allowedFiringTime = 0;
     private double lastFiringTime = -420;
@@ -52,19 +53,14 @@ public class CannonTurret : Turret
 
     public override void MainUpdate()
     {
-        Vector3 direction;
         if (TryFindTarget(out Enemy target))
         {
-            void AimAtTarget(Vector3 targetPosition)
-            {
-                direction = (targetPosition - projectileSpawn.position).normalized;
-                Aim(direction);
-            }
-
             bool smartPredictorFailed = true;
             if (smartPredictorEnabled)
             {
                 // Could add check until no more decreases
+
+                // Have dictionary of targets and what point to place next shot
 
                 float smartPredictorTime = range / cannonballSpeed;
                 for (float t = 0; t <= smartPredictorTime; t += smartPredictorIncrement)
@@ -75,13 +71,21 @@ public class CannonTurret : Turret
                     }
 
                     float distanceAtTime = Vector3.Distance(projectileSpawn.position, positionAtTime);
-                    float timeToReach = distanceAtTime / cannonballSpeed;
+                    float timeToReach = (distanceAtTime / cannonballSpeed);
+                    if (superAimEnabled)
+                    {
+                        float timeToFire = Mathf.Max(0, (float)(allowedFiringTime - Time.timeAsDouble));
+                        (float headingAtTime, float pitchAtTime) = Aim(positionAtTime);
+                        float timeToMoveHeading = Mathf.Min(Mathf.Abs(Mathf.DeltaAngle(currentHeading, headingAtTime + headingFireThreshold)), Mathf.Abs(Mathf.DeltaAngle(currentHeading, headingAtTime - headingFireThreshold))) / headingMoveSpeed;
+                        float timeToMovePitch = Mathf.Min(Mathf.Abs(Mathf.DeltaAngle(currentPitch, pitchAtTime + pitchFireThreshold)), Mathf.Abs(Mathf.DeltaAngle(currentPitch, pitchAtTime - pitchFireThreshold))) / pitchMoveSpeed;
+                        timeToReach += Mathf.Max(timeToFire, timeToMoveHeading, timeToMovePitch);
+                    }
                     float timeDelta = Mathf.Abs(t - timeToReach);
                     if (timeDelta <= smartPredictorMinTimeDelta)
                     {
                         if (distanceAtTime < range)
                         {
-                            AimAtTarget(positionAtTime);
+                            (targetHeading, targetPitch) = Aim(positionAtTime);
                             smartPredictorFailed = false;
                         }
                         break;
@@ -98,7 +102,7 @@ public class CannonTurret : Turret
                 float projectileTravelTime = Vector3.Distance(projectileSpawn.position, target.GetTargetPosition()) / cannonballSpeed;
                 if (target.TryGetFutureTargetPosition(projectileTravelTime, out Vector3 targetPosition) && Vector3.Distance(projectileSpawn.position, targetPosition) < range)
                 {
-                    AimAtTarget(targetPosition);
+                    (targetHeading, targetPitch) = Aim(targetPosition);
                 }
                 else
                 {
@@ -158,10 +162,12 @@ public class CannonTurret : Turret
     }
 
 
-    private void Aim(Vector3 vector)
+    private (float, float) Aim(Vector3 targetPosition)
     {
-        targetHeading = (Mathf.Atan2(vector.x, vector.z) * Mathf.Rad2Deg) + 90f;
-        targetPitch = Mathf.Sin(vector.y) * Mathf.Rad2Deg;
+        Vector3 vector = (targetPosition - projectileSpawn.position).normalized;
+        float heading = (Mathf.Atan2(vector.x, vector.z) * Mathf.Rad2Deg) + 90f;
+        float pitch = Mathf.Sin(vector.y) * Mathf.Rad2Deg;
+        return (heading, pitch);
     }
 
     private void SetHeadingAndPitch(float heading, float pitch)
