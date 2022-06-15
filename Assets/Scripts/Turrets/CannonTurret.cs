@@ -62,6 +62,8 @@ public class CannonTurret : Turret
 
                 // Have dictionary of targets and what point to place next shot
 
+                // Predicting when an enemy will die?
+
                 float smartPredictorTime = range / cannonballSpeed;
                 for (float t = 0; t <= smartPredictorTime; t += smartPredictorIncrement)
                 {
