@@ -5,6 +5,8 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     public Rigidbody rb;
+    public GameObject collisionParticle;
+
 
     public int damage;
     public int collateralHits;
@@ -13,7 +15,7 @@ public class Projectile : MonoBehaviour
     {
         if (Vector3.Distance(transform.position, GameManager.I.sphereCenter) >= GameManager.I.sphereRadius)
         {
-            Destroy(gameObject);
+            DestroyProjectile();
         }
     }
 
@@ -21,7 +23,15 @@ public class Projectile : MonoBehaviour
     {
         if (collider.CompareTag("Untagged"))
         {
-            Destroy(gameObject);
+
+            DestroyProjectile();
         }
     }
+
+    public void DestroyProjectile()
+    {
+        Instantiate(collisionParticle, this.transform.position, Quaternion.identity);
+        Destroy(gameObject);
+    }
+
 }

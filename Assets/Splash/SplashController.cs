@@ -31,7 +31,7 @@ public class SplashController : MonoBehaviour
         
         
         //Debug.Log(timer);
-        if(timer > -2)
+        if(timer > -1)
         {
             timer -= Time.deltaTime;
         }
@@ -50,7 +50,7 @@ public class SplashController : MonoBehaviour
             background.CrossFadeAlpha(0f, 0.5f, true);
             
         }
-        if(timer < -1)
+        if(timer < -0.5f)
         {
             splash.SetActive(false);
         }

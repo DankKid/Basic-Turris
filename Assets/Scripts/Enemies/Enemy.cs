@@ -109,7 +109,8 @@ public class Enemy : MonoBehaviour
             }
             if (projectile.collateralHits <= 0)
             {
-                Destroy(other.gameObject);
+                projectile.DestroyProjectile();
+                
             }
         }
     }

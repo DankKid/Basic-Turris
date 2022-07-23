@@ -245,6 +245,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 5303893306378533524}
+  collisionParticle: {fileID: 2330680112433853615, guid: 4a16776395d309c41b141412e995a8c2,
+    type: 3}
   damage: 2
   collateralHits: 1
 --- !u!96 &5032906876341565962

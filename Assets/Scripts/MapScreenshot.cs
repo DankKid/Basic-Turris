@@ -11,8 +11,7 @@ public class MapScreenshot : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            //ScreenCapture.CaptureScreenshot("Map1");
-            Debug.Log("1");
+            
             StartCoroutine(CoroutineScreenshot());
         }
     }
@@ -20,7 +19,7 @@ public class MapScreenshot : MonoBehaviour
     private IEnumerator CoroutineScreenshot()
     {
         yield return new WaitForEndOfFrame();
-        Debug.Log("2");
+        
         int width = Screen.width;
         int height = Screen.height;
         Texture2D screenshotTexture = new Texture2D(width, height, TextureFormat.ARGB32, false);

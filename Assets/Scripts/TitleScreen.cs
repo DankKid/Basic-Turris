@@ -17,39 +17,68 @@ public class TitleScreen : MonoBehaviour
     [SerializeField] List<GameObject> lockedMaps = new List<GameObject>();
     [SerializeField] List<GameObject> lockedGuns = new List<GameObject>();
 
-
+    bool gunOpened = false, mapOpened = false, settingsOpened = false;
 
     #region general
     public void PlayGame()
     {
-        //Open map menu
-        mapAnim.SetTrigger("OpenMap");
+        
+        if (!mapOpened)
+        {
+            mapAnim.SetTrigger("OpenMap");
+            mapOpened = true;
+        }
+        
     }
 
     public void Back()
     {
-        mapAnim.SetTrigger("CloseMap");
+        if (mapOpened)
+        {
+            mapAnim.SetTrigger("CloseMap");
+            mapOpened = false;
+        }
+        
     }
 
     public void GunSelection()
     {
-        gunAnim.SetTrigger("OpenGun");
+        if (!gunOpened)
+        {
+            gunAnim.SetTrigger("OpenGun");
+            gunOpened = true;
+        }
+            
     }
 
     public void GunBack()
     {
-        gunAnim.SetTrigger("CloseGun");
+        if (gunOpened)
+        {
+            gunAnim.SetTrigger("CloseGun");
+            gunOpened = false;
+        }
+            
     }
 
 
     public void Settings()
     {
-        settingAnim.SetTrigger("Open");
+        if (!settingsOpened)
+        {
+            settingAnim.SetTrigger("Open");
+            settingsOpened = true;
+        }
+        
     }
 
     public void SettingBack()
     {
-        settingAnim.SetTrigger("Close");
+        if (settingsOpened)
+        {
+            settingAnim.SetTrigger("Close");
+            settingsOpened = false;
+        }
     }
 
     public void QuitGame()
