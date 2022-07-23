@@ -30,7 +30,7 @@ public class SplashController : MonoBehaviour
     {
         
         
-        Debug.Log(timer);
+        //Debug.Log(timer);
         if(timer > -2)
         {
             timer -= Time.deltaTime;

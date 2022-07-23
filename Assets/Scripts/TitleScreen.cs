@@ -114,11 +114,12 @@ public class TitleScreen : MonoBehaviour
             PlayerPrefs.SetInt("wavesCompleted", 0);
             PlayerPrefs.SetInt("pointsGained", 0);
             PlayerPrefs.SetInt("pointsSpent", 0);
-
-
-
-
+            PlayerPrefs.SetInt("playerLevel", 0);
         }
+
+
+
+
         switch (PlayerPrefs.GetString("selectedGun"))
         {
             case "pistol":
@@ -188,6 +189,7 @@ public class TitleScreen : MonoBehaviour
                 lockedMaps[1].SetActive(false);
                 lockedMaps[2].SetActive(false);
                 lockedMaps[3].SetActive(false);
+                lockedGuns[0].SetActive(false);
                 lockedGuns[1].SetActive(false);
                 break;
             case 5:
