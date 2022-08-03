@@ -30,7 +30,7 @@ public class Projectile : MonoBehaviour
 
     public void DestroyProjectile()
     {
-        Instantiate(collisionParticle, this.transform.position, Quaternion.identity);
+        Instantiate(collisionParticle, this.transform.position, this.transform.rotation);
         Destroy(gameObject);
     }
 
