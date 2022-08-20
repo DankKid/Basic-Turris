@@ -8,7 +8,7 @@ public class Projectile : MonoBehaviour
     public GameObject collisionParticle;
 
 
-    public int damage;
+    public float damage;
     public int collateralHits;
 
     private void Update()

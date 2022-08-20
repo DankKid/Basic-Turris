@@ -104,7 +104,7 @@ public class Enemy : MonoBehaviour
             Projectile projectile = other.GetComponent<Projectile>();
             if (projectile.collateralHits > 0)
             {
-                currentHealth -= projectile.damage;
+                currentHealth -= (int) projectile.damage;
                 projectile.collateralHits--;
             }
             if (projectile.collateralHits <= 0)

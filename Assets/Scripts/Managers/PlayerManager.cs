@@ -10,18 +10,18 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private GameObject hands;
 
     [SerializeField] private GameObject projectileSpawn;
-    [SerializeField] private Projectile bulletPrefab;
+    [SerializeField] public Projectile bulletPrefab;
 
-    [SerializeField] private float walkingSpeed;
-    [SerializeField] private float runningSpeed;
-    [SerializeField] private float jumpSpeed;
+    [SerializeField] public float walkingSpeed;
+    [SerializeField] public float runningSpeed;
+    [SerializeField] public float jumpSpeed;
     [SerializeField] private float gravity;
     [SerializeField] private float lookSpeed;
     [SerializeField] private float lookXLimit;
     [SerializeField] private float momentumLerp;
-    [SerializeField] private float fireFrequency;
+    [SerializeField] public float fireFrequency;
     [Space]
-    [SerializeField] private float bulletSpeed;
+    [SerializeField] public float bulletSpeed;
     [Space]
     [SerializeField] private int startingCoreHealth;
 
