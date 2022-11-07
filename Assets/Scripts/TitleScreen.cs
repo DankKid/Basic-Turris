@@ -19,6 +19,11 @@ public class TitleScreen : MonoBehaviour
 
     bool gunOpened = false, mapOpened = false, settingsOpened = false;
 
+
+    [SerializeField] Rigidbody turretRB;
+    [SerializeField] float turretRotSpeed;
+
+
     #region general
     public void PlayGame()
     {
@@ -127,13 +132,17 @@ public class TitleScreen : MonoBehaviour
     #endregion
 
 
-
+    private void FixedUpdate()
+    {
+        
+    }
 
 
 
     private void Start()
     {
-        if(PlayerPrefs.GetString("selectedGun") == "")
+        turretRB.AddTorque(0, turretRotSpeed, 0, ForceMode.Force);
+        if (PlayerPrefs.GetString("selectedGun") == "")
         {
             PlayerPrefs.SetString("selectedGun", "pistol");
 

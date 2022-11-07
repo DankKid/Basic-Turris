@@ -11,7 +11,7 @@ public class MapScreenshot : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            
+            Debug.Log("Done!");
             StartCoroutine(CoroutineScreenshot());
         }
     }
